@@ -11,7 +11,7 @@ export default defineContentScript({
     const [menuPosition, setMenuPosition] = createSignal({ top: 0, left: 0 });
     const [selectedText, setSelectedText] = createSignal("");
     const [isOpen, setIsOpen] = createSignal(false);
-
+    const [menuOpen, setMenuOpen] = createSignal(false);
     const hexRegex = /^[0-9a-fA-F]{64}$/;
 
     const ui = createIntegratedUi(ctx, {
@@ -27,22 +27,25 @@ export default defineContentScript({
             <MenuComponent
               position={menuPosition()}
               content={selectedText()}
-              isOpen={isOpen()}
+              isOpen={isOpen}
               className={className}
-              onClose={() => ui.remove()}
+              //onClose={() => ui.remove()}
+              menuOpen={menuOpen}
             />
           ),
           container
         );
       },
       onRemove: (unmount: any) => {
+        setIsOpen(false);
+        setMenuOpen(false);
         // Unmount the app when the UI is removed
         if (unmount) {
           unmount();
         }
       },
     });
-
+    ui.mount();
     //
     // document.addEventListener("selectionchange", async (e) => {
     //   //このeでは何をクリックされたか検知できない市メニュー内クリックしたときもセレクトが切れるからだめ
@@ -63,7 +66,7 @@ export default defineContentScript({
       if (isOpen()) {
         if (!targetElement.classList.contains(className)) {
           setIsOpen(false);
-          ui.remove();
+          setMenuOpen(false);
           setSelectedText("");
           return;
         }
@@ -83,7 +86,7 @@ export default defineContentScript({
         setMenuPosition({ top, left });
         setSelectedText(_selectedText);
         //メニュー表示
-        ui.mount();
+        setMenuOpen(true);
         console.log(_selectedText);
       }
     });
