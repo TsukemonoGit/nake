@@ -7,8 +7,10 @@ import {
   createEffect,
   Accessor,
 } from "solid-js";
-import { nip19 } from "nostr-tools";
-
+import { className } from "@/util";
+import DecodableContent from "./DecodableContent";
+import HexContent from "./HexContent";
+import { hexRegex, encodableRegex } from "@/util";
 export default function MenuComponent(props: {
   position: { top: number; left: number };
   content: string;
@@ -22,25 +24,9 @@ export default function MenuComponent(props: {
   });
 
   const handleClickIcon = (e: any) => {
-    console.log(e);
+    //console.log(e);
     checkOverflow();
   };
-
-  const nevent = createMemo(() => {
-    try {
-      return nip19.neventEncode({ id: props.content });
-    } catch (error) {
-      return "";
-    }
-  });
-
-  const note = createMemo(() => {
-    try {
-      return nip19.noteEncode(props.content);
-    } catch (error) {
-      return "";
-    }
-  });
 
   let overflowCheck: HTMLDivElement | null = null;
   let nakeButton: HTMLButtonElement | null = null;
@@ -54,9 +40,9 @@ export default function MenuComponent(props: {
     }
     const newTop = Math.min(
       Math.max(0, pos().top + 40),
-      window.innerHeight - rect.height
+      window.innerHeight - rect.height - 20
     );
-    console.log(window.innerWidth);
+    //console.log(window.innerWidth);
     const newLeft = Math.min(
       Math.max(0, pos().left),
       Math.max(0, window.innerWidth - rect.width - 20)
@@ -70,15 +56,29 @@ export default function MenuComponent(props: {
   //   }
   // });
   createEffect(() => {
-    console.log("efe");
-    const rect = nakeButton?.getBoundingClientRect();
-    if (props.menuOpen() && rect) {
-      setPos({
-        top: props.position.top,
-        left: rect.left,
-      });
+    if (props.menuOpen()) {
+      const rect = nakeButton?.getBoundingClientRect();
+      if (rect) {
+        setPos({
+          top: props.position.top,
+          left: rect.left,
+        });
+      }
     }
-  }, props.menuOpen() as boolean);
+  });
+
+  const nakeContent = createMemo(() => {
+    // console.log(props.content);
+    // console.log(encodableRegex.test(props.content));
+    //console.log(hexRegex.test(props.content));
+    if (hexRegex.test(props.content)) {
+      return <HexContent content={props.content} />;
+    } else if (encodableRegex.test(props.content)) {
+      return <DecodableContent content={props.content} />;
+    } else {
+      return <div>Invalid content</div>;
+    }
+  });
   return (
     <Show when={props.menuOpen()}>
       <div
@@ -127,9 +127,8 @@ export default function MenuComponent(props: {
               "word-break": "break-all",
             }}
           >
-            <h2 class={props.className}>selected: {props.content}</h2>
-            <p class={props.className}>{nevent()}</p>
-            <p class={props.className}>{note()}</p>
+            <button>❌️</button>
+            <div class={className}>{nakeContent()}</div>
           </div>
         </Show>
       </div>

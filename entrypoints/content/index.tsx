@@ -1,18 +1,17 @@
 import { render } from "solid-js/web";
 import MenuComponent from "./MenuComponent";
-import { BECH32_REGEX } from "nostr-tools/nip19";
 import { createSignal } from "solid-js";
+import { hexRegex, className, encodableRegex } from "../../util";
 
 export default defineContentScript({
   matches: ["<all_urls>"],
 
   async main(ctx: any) {
-    const className = "nake";
     const [menuPosition, setMenuPosition] = createSignal({ top: 0, left: 0 });
     const [selectedText, setSelectedText] = createSignal("");
     const [isOpen, setIsOpen] = createSignal(false);
     const [menuOpen, setMenuOpen] = createSignal(false);
-    const hexRegex = /^[0-9a-fA-F]{64}$/;
+    //const hexRegex = /^[0-9a-fA-F]{64}$/;
 
     const ui = createIntegratedUi(ctx, {
       //createShadowRootUi
@@ -78,7 +77,7 @@ export default defineContentScript({
       if (
         _selectedText &&
         _selectedText.length >= 63 &&
-        (BECH32_REGEX.test(_selectedText) || hexRegex.test(_selectedText))
+        (encodableRegex.test(_selectedText) || hexRegex.test(_selectedText))
       ) {
         //アイコンを表示する場所
         const top = e.clientY + window.scrollY + 20;
@@ -87,7 +86,11 @@ export default defineContentScript({
         setSelectedText(_selectedText);
         //メニュー表示
         setMenuOpen(true);
-        console.log(_selectedText);
+        // console.log(_selectedText);
+      } else {
+        setIsOpen(false);
+        setMenuOpen(false);
+        setSelectedText("");
       }
     });
     // document.addEventListener("mousedown", function (event) {
