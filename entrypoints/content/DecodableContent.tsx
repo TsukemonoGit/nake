@@ -16,19 +16,25 @@ export default function DecodableContent({ content }: { content: string }) {
   return (
     <>
       <Show when={decoded() !== null}>
+        <span class={className} style={{ "font-weight": "bold" }}>
+          type:{decoded()?.type}
+        </span>
         <Switch fallback={<div>Not Found</div>}>
           <Match when={decoded()?.type === "nprofile"}>
             <>
-              {/* <P>[type:nprofile]</P> */}
-
-              {/* <span class={className}>[hex]</span> */}
-              <CopyButton
-                style={{ margin: "6px 0" }}
-                text={(decoded()?.data as nip19.ProfilePointer).pubkey}
-              />
+              <div class={className} style={{ margin: "6px 0" }}>
+                <span class={className} style={{ "font-weight": "bold" }}>
+                  [id]
+                </span>
+                <CopyButton
+                  text={(decoded()?.data as nip19.ProfilePointer).pubkey}
+                />
+              </div>
               <Show when={(decoded()?.data as nip19.ProfilePointer)?.relays}>
                 <div class={className} style={{ margin: "6px 0" }}>
-                  <span class={className}>[relays]</span>
+                  <span class={className} style={{ "font-weight": "bold" }}>
+                    [relays]
+                  </span>
                   <CopyButton
                     text={
                       (decoded()?.data as nip19.ProfilePointer)?.relays?.join(
@@ -55,11 +61,17 @@ export default function DecodableContent({ content }: { content: string }) {
           </Match>
           <Match when={decoded()?.type === "nevent"}>
             <>
-              <CopyButton text={(decoded()?.data as nip19.EventPointer).id} />
-
+              <div class={className} style={{ margin: "6px 0" }}>
+                <span class={className} style={{ "font-weight": "bold" }}>
+                  [id]
+                </span>
+                <CopyButton text={(decoded()?.data as nip19.EventPointer).id} />
+              </div>
               <Show when={(decoded()?.data as nip19.EventPointer).relays}>
                 <div class={className} style={{ margin: "6px 0" }}>
-                  <span class={className}>[relays]</span>
+                  <span class={className} style={{ "font-weight": "bold" }}>
+                    [relays]
+                  </span>
                   <CopyButton
                     text={
                       (decoded()?.data as nip19.EventPointer)?.relays?.join(
@@ -71,7 +83,9 @@ export default function DecodableContent({ content }: { content: string }) {
               </Show>
               <Show when={(decoded()?.data as nip19.EventPointer).kind}>
                 <div class={className} style={{ margin: "6px 0" }}>
-                  <span class={className}>[kind]</span>
+                  <span class={className} style={{ "font-weight": "bold" }}>
+                    [kind]
+                  </span>
                   <CopyButton
                     text={
                       (
@@ -83,7 +97,9 @@ export default function DecodableContent({ content }: { content: string }) {
               </Show>
               <Show when={(decoded()?.data as nip19.EventPointer).author}>
                 <div class={className} style={{ margin: "6px 0" }}>
-                  <span class={className}>[author]</span>
+                  <span class={className} style={{ "font-weight": "bold" }}>
+                    [author]
+                  </span>
                   <CopyButton
                     text={(decoded()?.data as nip19.EventPointer)?.author ?? ""}
                   />
@@ -100,13 +116,17 @@ export default function DecodableContent({ content }: { content: string }) {
           <Match when={decoded()?.type === "naddr"}>
             <>
               <div class={className} style={{ margin: "6px 0" }}>
-                <span class={className}>[identifier]</span>
+                <span class={className} style={{ "font-weight": "bold" }}>
+                  [identifier]
+                </span>
                 <CopyButton
                   text={(decoded()?.data as nip19.AddressPointer).identifier}
                 />
               </div>
               <div class={className} style={{ margin: "6px 0" }}>
-                <span class={className}>[kind]</span>
+                <span class={className} style={{ "font-weight": "bold" }}>
+                  [kind]
+                </span>
                 <CopyButton
                   text={(
                     decoded()?.data as nip19.AddressPointer
@@ -114,7 +134,9 @@ export default function DecodableContent({ content }: { content: string }) {
                 />
               </div>
               <div class={className} style={{ margin: "6px 0" }}>
-                <span class={className}>[pubkey]</span>
+                <span class={className} style={{ "font-weight": "bold" }}>
+                  [pubkey]
+                </span>
                 <CopyButton
                   text={(decoded()?.data as nip19.AddressPointer).pubkey}
                 />
@@ -122,7 +144,9 @@ export default function DecodableContent({ content }: { content: string }) {
 
               <Show when={(decoded()?.data as nip19.AddressPointer).relays}>
                 <div class={className} style={{ margin: "6px 0" }}>
-                  <span class={className}>[relays]</span>
+                  <span class={className} style={{ "font-weight": "bold" }}>
+                    [relays]
+                  </span>
                   <CopyButton
                     text={
                       (decoded()?.data as nip19.AddressPointer)?.relays?.join(
