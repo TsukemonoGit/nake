@@ -1,6 +1,6 @@
 {
-  "name": "wxt-starter",
-  "description": "manifest.json description",
+  "name": "nake",
+  "description": "Nostr Army Knife webExtension",
   "private": true,
   "version": "0.0.0",
   "type": "module",
