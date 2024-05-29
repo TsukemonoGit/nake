@@ -93,6 +93,7 @@ export default function MenuComponent(props: {
           padding: "5px",
           width: "max-content",
           height: "max-content",
+          "z-index": "9999",
         }}
       >
         <button
