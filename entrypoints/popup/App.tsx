@@ -53,13 +53,17 @@ function App() {
   // });
 
   return (
-    <div>
+    <div style={{ "min-width": "350px" }}>
+      <h2>NAKE</h2>
       <input
+        style={{ margin: "1em 0" }}
         type="text"
         placeholder="hex or note1,npub1,..."
         onInput={(e) => setSelectedText(e.target.value)}
       />
-      <div style={{ "margin-top": "1em" }}>{nakeContent()}</div>
+      <div style={{ width: "max-content", "max-width": "95vw" }}>
+        {nakeContent()}
+      </div>
     </div>
   );
 }

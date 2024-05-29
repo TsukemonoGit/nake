@@ -1,4 +1,4 @@
-import Icon from "@/public/icon/16.png";
+import Icon from "@/public/wxt.svg";
 import {
   createSignal,
   createMemo,
@@ -39,12 +39,12 @@ export default function MenuComponent(props: {
       return;
     }
     const newTop = Math.min(
-      Math.max(0, pos().top + 40),
+      Math.max(0, props.position.top + 40),
       window.innerHeight - rect.height - 20
     );
     //console.log(window.innerWidth);
     const newLeft = Math.min(
-      Math.max(0, pos().left),
+      Math.max(0, props.position.left),
       Math.max(0, window.innerWidth - rect.width - 20)
     );
     setPos({ top: newTop, left: newLeft });
@@ -90,10 +90,12 @@ export default function MenuComponent(props: {
           left: `${props.position.left}px`,
           background: "white",
           border: "1px solid #ccc",
-          padding: "5px",
+
           width: "max-content",
           height: "max-content",
           "z-index": "9999",
+          "border-radius": "100%",
+          "box-shadow": "2px 2px 10px 0px rgba(0, 0, 0, 0.35)",
         }}
       >
         <button
@@ -108,7 +110,13 @@ export default function MenuComponent(props: {
           }}
           onClick={handleClickIcon}
         >
-          <img class={props.className} src={Icon} alt="Translate" />
+          <img
+            width={24}
+            height={24}
+            class={props.className}
+            src={Icon}
+            alt="Translate"
+          />
         </button>
         <Show when={props.isOpen()}>
           <div
@@ -124,8 +132,9 @@ export default function MenuComponent(props: {
               "overflow-x": "auto",
               background: "white",
               border: "1px solid #ccc",
-              padding: "5px",
+              padding: "10px",
               "word-break": "break-all",
+              "box-shadow": "2px 2px 10px 0px rgba(0, 0, 0, 0.35)",
             }}
           >
             <button>❌️</button>
