@@ -1,7 +1,7 @@
 import { nip19 } from "nostr-tools";
 import { Accessor, Match, Show, Switch, createMemo } from "solid-js";
 import CopyButton from "./CopyButton";
-
+import { bytesToHex, hexToBytes } from "@noble/hashes/utils";
 import { className } from "@/util";
 
 export default function DecodableContent({ content }: { content: string }) {
@@ -160,7 +160,14 @@ export default function DecodableContent({ content }: { content: string }) {
           </Match>
           <Match when={decoded()?.type === "nsec"}>
             <>
-              <CopyButton text={(decoded()?.data as Uint8Array).toString()} />
+              <CopyButton
+                style={{ margin: "6px 0" }}
+                text={(decoded()?.data as Uint8Array).toString()}
+              />
+              <CopyButton
+                style={{ margin: "6px 0" }}
+                text={bytesToHex(decoded()?.data as Uint8Array)}
+              />
             </>
           </Match>
           <Match when={decoded()?.type === "npub"}>
