@@ -11,6 +11,7 @@ export default defineContentScript({
     const [selectedText, setSelectedText] = createSignal("");
     const [isOpen, setIsOpen] = createSignal(false);
     const [menuOpen, setMenuOpen] = createSignal(false);
+    let isTouch = false;
     //const hexRegex = /^[0-9a-fA-F]{64}$/;
 
     const ui = createIntegratedUi(ctx, {
@@ -53,6 +54,10 @@ export default defineContentScript({
     //   }
     // });
     document.addEventListener("mouseup", async (e) => {
+      if (isTouch) {
+        return;
+      }
+      console.log(e);
       const targetElement = e.target as HTMLElement;
 
       //menu開く（nake詳細表示）
@@ -82,6 +87,49 @@ export default defineContentScript({
         //アイコンを表示する場所
         const top = e.clientY + window.scrollY + 20;
         const left = e.clientX + window.scrollX + 10;
+        setMenuPosition({ top, left });
+        setSelectedText(_selectedText);
+        //メニュー表示
+        setMenuOpen(true);
+        // console.log(_selectedText);
+      } else {
+        setIsOpen(false);
+        setMenuOpen(false);
+        setSelectedText("");
+      }
+    });
+    document.addEventListener("touchend", async (e) => {
+      isTouch = true;
+      console.log(e);
+      const targetElement = e.target as HTMLElement;
+
+      //menu開く（nake詳細表示）
+      if (targetElement.closest("#selectionMenu")) {
+        setIsOpen(true);
+        return;
+      }
+
+      //nake開いててnake外だったら閉じる
+      if (isOpen()) {
+        if (!targetElement.classList.contains(className)) {
+          setIsOpen(false);
+          setMenuOpen(false);
+          setSelectedText("");
+          return;
+        }
+        return;
+      }
+      const _selectedText = window?.getSelection()?.toString().trim();
+
+      //選択中の文字列がnakeアイコン表示する対象か?
+      if (
+        _selectedText &&
+        _selectedText.length >= 63 &&
+        (encodableRegex.test(_selectedText) || hexRegex.test(_selectedText))
+      ) {
+        //アイコンを表示する場所
+        const top = e.changedTouches[0].clientY + window.scrollY + 20;
+        const left = e.changedTouches[0].clientX + window.scrollX + 10;
         setMenuPosition({ top, left });
         setSelectedText(_selectedText);
         //メニュー表示
