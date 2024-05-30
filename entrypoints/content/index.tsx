@@ -1,7 +1,7 @@
 import { render } from "solid-js/web";
 import MenuComponent from "./MenuComponent";
 import { createSignal } from "solid-js";
-import { hexRegex, className, encodableRegex } from "../../util";
+import { hexRegex, className, encodableRegex, nip33Regex } from "../../util";
 
 export default defineContentScript({
   matches: ["<all_urls>"],
@@ -82,7 +82,9 @@ export default defineContentScript({
       if (
         _selectedText &&
         _selectedText.length >= 63 &&
-        (encodableRegex.test(_selectedText) || hexRegex.test(_selectedText))
+        (encodableRegex.test(_selectedText) ||
+          hexRegex.test(_selectedText) ||
+          nip33Regex.test(_selectedText))
       ) {
         //アイコンを表示する場所
         const top = e.clientY + window.scrollY + 20;
@@ -125,7 +127,9 @@ export default defineContentScript({
       if (
         _selectedText &&
         _selectedText.length >= 63 &&
-        (encodableRegex.test(_selectedText) || hexRegex.test(_selectedText))
+        (encodableRegex.test(_selectedText) ||
+          hexRegex.test(_selectedText) ||
+          nip33Regex.test(_selectedText))
       ) {
         //アイコンを表示する場所
         const top = e.changedTouches[0].clientY + window.scrollY + 20;

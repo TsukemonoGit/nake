@@ -1,9 +1,10 @@
 import { createEffect, createMemo, createSignal, onMount } from "solid-js";
 import "./App.css";
 import Icon from "@/public/wxt.svg";
-import { encodableRegex, hexRegex } from "@/util";
+import { encodableRegex, hexRegex, nip33Regex } from "@/util";
 import HexContent from "../content/HexContent";
 import DecodableContent from "../content/DecodableContent";
+import Nip33AtagContent from "../content/Nip33AtagContent";
 function App() {
   const [selectedText, setSelectedText] = createSignal("");
 
@@ -40,6 +41,8 @@ function App() {
       return <HexContent content={selectedText()} />;
     } else if (encodableRegex.test(selectedText())) {
       return <DecodableContent content={selectedText()} />;
+    } else if (nip33Regex.test(selectedText())) {
+      return <Nip33AtagContent content={selectedText()} />;
     } else {
       return <div>Invalid content</div>;
     }

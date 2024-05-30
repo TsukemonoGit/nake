@@ -194,7 +194,7 @@ export default function DecodableContent({ content }: { content: string }) {
                   class={className}
                   style={{ "font-weight": "bold", "font-size": "smaller" }}
                 >
-                  [nip33 'a' tag]
+                  ['a' tag]
                 </span>
                 <CopyButton
                   text={`${(

@@ -7,10 +7,11 @@ import {
   createEffect,
   Accessor,
 } from "solid-js";
-import { className } from "@/util";
+import { className, nip33Regex } from "@/util";
 import DecodableContent from "./DecodableContent";
 import HexContent from "./HexContent";
 import { hexRegex, encodableRegex } from "@/util";
+import Nip33AtagContent from "./Nip33AtagContent";
 
 export default function MenuComponent(props: {
   position: { top: number; left: number };
@@ -69,6 +70,8 @@ export default function MenuComponent(props: {
       return <HexContent content={props.content} />;
     } else if (encodableRegex.test(props.content)) {
       return <DecodableContent content={props.content} />;
+    } else if (nip33Regex.test(props.content)) {
+      return <Nip33AtagContent content={props.content} />;
     } else {
       return <div>Invalid content</div>;
     }
