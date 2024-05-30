@@ -7,7 +7,7 @@ import { className } from "@/util";
 export default function DecodableContent({ content }: { content: string }) {
   const decoded: Accessor<nip19.DecodeResult | null> = createMemo(() => {
     try {
-      console.log(nip19.decode(content).type);
+      // console.log(nip19.decode(content).type);
       return nip19.decode(content);
     } catch (error) {
       return null;
