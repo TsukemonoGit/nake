@@ -1,12 +1,12 @@
 import { className } from "@/util";
 import CopyButton from "./CopyButton";
-import { Show } from "solid-js";
+import { Accessor, Show } from "solid-js";
 
 export default function Content({
   content,
   title,
 }: {
-  content: string;
+  content: Accessor<string> | string;
   title?: string;
 }) {
   return (

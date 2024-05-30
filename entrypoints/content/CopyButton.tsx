@@ -1,9 +1,9 @@
-import { Show, createSignal } from "solid-js";
+import { Accessor, Show, createSignal } from "solid-js";
 import Button from "./Button";
 import { className } from "@/util";
 
 interface CopyButtonProps {
-  text: string;
+  text: string | Accessor<string>;
   style?: any;
 }
 
@@ -56,7 +56,7 @@ export default function CopyButton({ text, style }: CopyButtonProps) {
   );
 
   const copy = async () => {
-    navigator.clipboard.writeText(text);
+    navigator.clipboard.writeText(typeof text === "string" ? text : text());
     setCopied(true);
     await new Promise<void>((resolve) => {
       setTimeout(() => {
@@ -68,7 +68,7 @@ export default function CopyButton({ text, style }: CopyButtonProps) {
   return (
     <div class={className} style={style}>
       <span class={className} style={{ "font-size": "smaller" }}>
-        {text}
+        {typeof text === "string" ? text : text()}
       </span>
       <Button onClick={copy} style={{ "margin-left": "4px", padding: "0" }}>
         <Show when={copied()} fallback={<>{copyIcon}</>}>

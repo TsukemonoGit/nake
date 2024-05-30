@@ -2,7 +2,7 @@ import { render } from "solid-js/web";
 import MenuComponent from "./MenuComponent";
 import { createSignal } from "solid-js";
 import { hexRegex, className, encodableRegex, nip33Regex } from "../../util";
-
+import "./style.css";
 export default defineContentScript({
   matches: ["<all_urls>"],
 
