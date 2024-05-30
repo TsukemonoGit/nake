@@ -1,6 +1,6 @@
 import { createEffect, createMemo, createSignal, onMount } from "solid-js";
 import "./App.css";
-
+import Icon from "@/public/wxt.svg";
 import { encodableRegex, hexRegex } from "@/util";
 import HexContent from "../content/HexContent";
 import DecodableContent from "../content/DecodableContent";
@@ -53,15 +53,24 @@ function App() {
   // });
 
   return (
-    <div style={{ "min-width": "350px" }}>
-      <h2>NAKE</h2>
+    <div>
+      <h2>
+        <img
+          width={20}
+          height={20}
+          src={Icon}
+          alt="nake"
+          style={{ "margin-right": "0.5em" }}
+        />
+        NAKE
+      </h2>
       <input
-        style={{ margin: "1em 0" }}
+        style={{ margin: "1em 0", "min-width": "350px", "max-width": "90vw" }}
         type="text"
         placeholder="hex or note1,npub1,..."
         onInput={(e) => setSelectedText(e.target.value)}
       />
-      <div style={{ width: "max-content", "max-width": "95vw" }}>
+      <div style={{ "min-width": "350px", "max-width": "90vw" }}>
         {nakeContent()}
       </div>
     </div>

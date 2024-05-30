@@ -39,12 +39,14 @@ export default function MenuComponent(props: {
     if (!rect || !buttonRect) {
       return;
     }
+
     const newTop = Math.min(
-      Math.max(0, props.position.top + 40),
+      Math.max(0, buttonRect.top + 20),
       window.innerHeight - rect.height - 20
     );
+
     const newLeft = Math.min(
-      Math.max(0, props.position.left),
+      Math.max(0, buttonRect.left + 30),
       Math.max(0, window.innerWidth - rect.width - 20)
     );
     setPos({ top: newTop, left: newLeft });
@@ -55,7 +57,7 @@ export default function MenuComponent(props: {
       const rect = nakeButton?.getBoundingClientRect();
       if (rect) {
         setPos({
-          top: props.position.top,
+          top: rect.top + 20,
           left: rect.left,
         });
       }
