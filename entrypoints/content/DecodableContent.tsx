@@ -189,6 +189,21 @@ export default function DecodableContent({ content }: { content: string }) {
                   />
                 </div>
               </Show>
+              <div class={className} style={{ margin: "6px 0" }}>
+                <span
+                  class={className}
+                  style={{ "font-weight": "bold", "font-size": "smaller" }}
+                >
+                  [nip33 'a' tag]
+                </span>
+                <CopyButton
+                  text={`${(
+                    decoded()?.data as nip19.AddressPointer
+                  ).kind.toString()}:${
+                    (decoded()?.data as nip19.AddressPointer).pubkey
+                  }:${(decoded()?.data as nip19.AddressPointer).identifier}`}
+                />
+              </div>
             </>
           </Match>
           <Match when={decoded()?.type === "nsec"}>

@@ -238,7 +238,7 @@ export default function MenuComponent(props: {
               <div
                 class={`${className}`}
                 style={{
-                  padding: "4px 8px 0px  8px",
+                  padding: "4px 8px 1px  8px",
 
                   display: "flex",
                   "flex-direction": "row",
