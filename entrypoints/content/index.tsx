@@ -57,7 +57,7 @@ export default defineContentScript({
       if (isTouch) {
         return;
       }
-      console.log(e);
+      // console.log(e);
       const targetElement = e.target as HTMLElement;
 
       //menu開く（nake詳細表示）
@@ -100,7 +100,7 @@ export default defineContentScript({
     });
     document.addEventListener("touchend", async (e) => {
       isTouch = true;
-      console.log(e);
+      //console.log(e);
       const targetElement = e.target as HTMLElement;
 
       //menu開く（nake詳細表示）

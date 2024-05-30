@@ -68,7 +68,7 @@ export default function CopyButton({ text, style }: CopyButtonProps) {
   return (
     <div class={className} style={style}>
       <span class={className}>{text}</span>
-      <Button onClick={copy} style={{ "margin-left": "4px" }}>
+      <Button onClick={copy} style={{ "margin-left": "4px", padding: "0" }}>
         <Show when={copied()} fallback={<>{copyIcon}</>}>
           <>{copiedIcon}</>
         </Show>

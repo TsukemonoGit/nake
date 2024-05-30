@@ -11,6 +11,7 @@ import { className } from "@/util";
 import DecodableContent from "./DecodableContent";
 import HexContent from "./HexContent";
 import { hexRegex, encodableRegex } from "@/util";
+
 export default function MenuComponent(props: {
   position: { top: number; left: number };
   content: string;
@@ -42,7 +43,6 @@ export default function MenuComponent(props: {
       Math.max(0, props.position.top + 40),
       window.innerHeight - rect.height - 20
     );
-    //console.log(window.innerWidth);
     const newLeft = Math.min(
       Math.max(0, props.position.left),
       Math.max(0, window.innerWidth - rect.width - 20)
@@ -50,11 +50,6 @@ export default function MenuComponent(props: {
     setPos({ top: newTop, left: newLeft });
   };
 
-  // createEffect(() => {
-  //   if (props.isOpen()) {
-  //     checkOverflow();
-  //   }
-  // });
   createEffect(() => {
     if (props.menuOpen()) {
       const rect = nakeButton?.getBoundingClientRect();
@@ -68,9 +63,6 @@ export default function MenuComponent(props: {
   });
 
   const nakeContent = createMemo(() => {
-    // console.log(props.content);
-    // console.log(encodableRegex.test(props.content));
-    //console.log(hexRegex.test(props.content));
     if (hexRegex.test(props.content)) {
       return <HexContent content={props.content} />;
     } else if (encodableRegex.test(props.content)) {
@@ -79,6 +71,68 @@ export default function MenuComponent(props: {
       return <div>Invalid content</div>;
     }
   });
+
+  const [isDragging, setIsDragging] = createSignal(false);
+  const [dragStart, setDragStart] = createSignal({ x: 0, y: 0 });
+
+  const handleMouseDown = (e: MouseEvent) => {
+    setIsDragging(true);
+    setDragStart({ x: e.clientX, y: e.clientY });
+    document.addEventListener("mousemove", handleMouseMove);
+    document.addEventListener("mouseup", handleMouseUp);
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    if (!isDragging()) return;
+    const dx = e.clientX - dragStart().x;
+    const dy = e.clientY - dragStart().y;
+    setPos((prev) => ({
+      top: prev.top + dy,
+      left: prev.left + dx,
+    }));
+    setDragStart({ x: e.clientX, y: e.clientY });
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+    document.removeEventListener("mousemove", handleMouseMove);
+    document.removeEventListener("mouseup", handleMouseUp);
+  };
+
+  const handleTouchStart = (e: TouchEvent) => {
+    setIsDragging(true);
+    const touch = e.touches[0];
+    setDragStart({ x: touch.clientX, y: touch.clientY });
+    document.addEventListener("touchmove", handleTouchMove);
+    document.addEventListener("touchend", handleTouchEnd);
+  };
+
+  const handleTouchMove = (e: TouchEvent) => {
+    if (!isDragging()) return;
+    const touch = e.touches[0];
+    const dx = touch.clientX - dragStart().x;
+    const dy = touch.clientY - dragStart().y;
+    setPos((prev) => ({
+      top: prev.top + dy,
+      left: prev.left + dx,
+    }));
+    setDragStart({ x: touch.clientX, y: touch.clientY });
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+    document.removeEventListener("touchmove", handleTouchMove);
+    document.removeEventListener("touchend", handleTouchEnd);
+  };
+
+  // Cleanup event listeners on component unmount
+  onCleanup(() => {
+    document.removeEventListener("mousemove", handleMouseMove);
+    document.removeEventListener("mouseup", handleMouseUp);
+    document.removeEventListener("touchmove", handleTouchMove);
+    document.removeEventListener("touchend", handleTouchEnd);
+  });
+
   return (
     <Show when={props.menuOpen()}>
       <div
@@ -90,7 +144,6 @@ export default function MenuComponent(props: {
           left: `${props.position.left}px`,
           background: "white",
           border: "1px solid #ccc",
-
           width: "max-content",
           height: "max-content",
           "z-index": "9999",
@@ -106,7 +159,12 @@ export default function MenuComponent(props: {
           class={props.className}
           type="button"
           style={{
-            padding: "5px",
+            padding: "4px",
+            display: "flex",
+            width: "32px",
+            height: "32px",
+            "justify-content": "center",
+            "vertical-align": "middle",
           }}
           onClick={handleClickIcon}
         >
@@ -132,13 +190,51 @@ export default function MenuComponent(props: {
               "overflow-x": "auto",
               background: "white",
               border: "1px solid #ccc",
-              padding: "10px",
+
               "word-break": "break-all",
               "box-shadow": "2px 2px 10px 0px rgba(0, 0, 0, 0.35)",
+              display: "grid",
+              "grid-template-columns": "auto 1fr",
+              "column-gap": "4px",
+              "border-radius": "0.5em",
             }}
           >
-            <button>❌️</button>
-            <div class={className}>{nakeContent()}</div>
+            <div
+              class={`${className}`}
+              style={{
+                cursor: "move",
+                "background-color": "#eee",
+                display: "flex",
+                "justify-content": "center",
+                "vertical-align": "middle",
+                "align-items": "center",
+              }}
+              onMouseDown={handleMouseDown}
+              onTouchStart={handleTouchStart}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 256 256"
+              >
+                <path
+                  fill="#ccc"
+                  d="M108 60a16 16 0 1 1-16-16a16 16 0 0 1 16 16m56 16a16 16 0 1 0-16-16a16 16 0 0 0 16 16m-72 36a16 16 0 1 0 16 16a16 16 0 0 0-16-16m72 0a16 16 0 1 0 16 16a16 16 0 0 0-16-16m-72 68a16 16 0 1 0 16 16a16 16 0 0 0-16-16m72 0a16 16 0 1 0 16 16a16 16 0 0 0-16-16"
+                />
+              </svg>
+            </div>
+            <div
+              class={`${className}`}
+              style={{
+                padding: "10px",
+                display: "flex",
+                "flex-direction": "column",
+              }}
+            >
+              <button style={{ padding: "0", "align-self": "end" }}>❌️</button>
+              <div class={className}>{nakeContent()}</div>
+            </div>
           </div>
         </Show>
       </div>
