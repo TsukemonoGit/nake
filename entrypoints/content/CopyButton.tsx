@@ -21,7 +21,7 @@ export default function CopyButton({ text, style }: CopyButtonProps) {
       <g
         class={className}
         fill="none"
-        stroke="#aaa"
+        stroke="#FF7375"
         stroke-linecap="round"
         stroke-linejoin="round"
         stroke-width="2"
@@ -46,7 +46,7 @@ export default function CopyButton({ text, style }: CopyButtonProps) {
       <path
         class={className}
         fill="none"
-        stroke="#aaa"
+        stroke="#FF7375"
         stroke-linecap="round"
         stroke-linejoin="round"
         stroke-width="2"
@@ -67,7 +67,9 @@ export default function CopyButton({ text, style }: CopyButtonProps) {
   };
   return (
     <div class={className} style={style}>
-      <span class={className}>{text}</span>
+      <span class={className} style={{ "font-size": "smaller" }}>
+        {text}
+      </span>
       <Button onClick={copy} style={{ "margin-left": "4px", padding: "0" }}>
         <Show when={copied()} fallback={<>{copyIcon}</>}>
           <>{copiedIcon}</>

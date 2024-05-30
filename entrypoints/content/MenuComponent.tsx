@@ -197,7 +197,7 @@ export default function MenuComponent(props: {
               "box-shadow": "2px 2px 10px 0px rgba(0, 0, 0, 0.35)",
               display: "grid",
               "grid-template-columns": "auto 1fr",
-              "column-gap": "4px",
+
               "border-radius": "0.5em",
             }}
           >
@@ -205,11 +205,12 @@ export default function MenuComponent(props: {
               class={`${className}`}
               style={{
                 cursor: "move",
-                "background-color": "#eee",
+                "background-color": "#ccc",
                 display: "flex",
                 "justify-content": "center",
                 "vertical-align": "middle",
                 "align-items": "center",
+                "border-right": " 1px solid #bbb",
               }}
               onMouseDown={handleMouseDown}
               onTouchStart={handleTouchStart}
@@ -222,7 +223,7 @@ export default function MenuComponent(props: {
                 viewBox="0 0 256 256"
               >
                 <path
-                  fill="#ccc"
+                  fill="#888"
                   d="M108 60a16 16 0 1 1-16-16a16 16 0 0 1 16 16m56 16a16 16 0 1 0-16-16a16 16 0 0 0 16 16m-72 36a16 16 0 1 0 16 16a16 16 0 0 0-16-16m72 0a16 16 0 1 0 16 16a16 16 0 0 0-16-16m-72 68a16 16 0 1 0 16 16a16 16 0 0 0-16-16m72 0a16 16 0 1 0 16 16a16 16 0 0 0-16-16"
                 />
               </svg>
@@ -230,13 +231,46 @@ export default function MenuComponent(props: {
             <div
               class={`${className}`}
               style={{
-                padding: "10px",
                 display: "flex",
                 "flex-direction": "column",
               }}
             >
-              <button style={{ padding: "0", "align-self": "end" }}>❌️</button>
-              <div class={className}>{nakeContent()}</div>
+              <div
+                class={`${className}`}
+                style={{
+                  padding: "4px 8px 0px  8px",
+
+                  display: "flex",
+                  "flex-direction": "row",
+                  "border-bottom": " 1px solid #ddd",
+                  "justify-content": "space-between",
+                  "background-color": "#eee",
+                }}
+              >
+                <div
+                  class={`${className}`}
+                  style={{
+                    display: "flex",
+                    "flex-direction": "row",
+                    gap: "4px",
+                  }}
+                >
+                  <img
+                    width={24}
+                    height={24}
+                    class={props.className}
+                    src={Icon}
+                    alt="Translate"
+                  />
+                  NAKE
+                </div>
+                <button style={{ padding: "0", "align-self": "end" }}>
+                  ❌️
+                </button>
+              </div>
+              <div class={className} style={{ padding: "6px" }}>
+                {nakeContent()}
+              </div>
             </div>
           </div>
         </Show>
