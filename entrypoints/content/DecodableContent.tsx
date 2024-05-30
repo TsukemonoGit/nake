@@ -3,6 +3,7 @@ import { Accessor, Match, Show, Switch, createMemo } from "solid-js";
 import CopyButton from "./CopyButton";
 import { bytesToHex, hexToBytes } from "@noble/hashes/utils";
 import { className } from "@/util";
+import Content from "./Content";
 
 export default function DecodableContent({ content }: { content: string }) {
   const decoded: Accessor<nip19.DecodeResult | null> = createMemo(() => {
@@ -25,17 +26,10 @@ export default function DecodableContent({ content }: { content: string }) {
         <Switch fallback={<div>Not Found</div>}>
           <Match when={decoded()?.type === "nprofile"}>
             <>
-              <div class={className} style={{ margin: "6px 0" }}>
-                <span
-                  class={className}
-                  style={{ "font-weight": "bold", "font-size": "smaller" }}
-                >
-                  [id]
-                </span>
-                <CopyButton
-                  text={(decoded()?.data as nip19.ProfilePointer).pubkey}
-                />
-              </div>
+              <Content
+                content={(decoded()?.data as nip19.ProfilePointer).pubkey}
+                title={"id"}
+              />
               <Show when={(decoded()?.data as nip19.ProfilePointer)?.relays}>
                 <div class={className} style={{ margin: "6px 0" }}>
                   <span
@@ -54,12 +48,11 @@ export default function DecodableContent({ content }: { content: string }) {
                 </div>
               </Show>
               <hr />
-              {/* <span class={className}>[npub]</span> */}
-              <CopyButton
-                style={{ margin: "6px 0" }}
-                text={nip19.npubEncode(
+              <Content
+                content={nip19.npubEncode(
                   (decoded()?.data as nip19.ProfilePointer).pubkey
                 )}
+                title={"npub"}
               />
             </>
           </Match>
@@ -70,15 +63,11 @@ export default function DecodableContent({ content }: { content: string }) {
           </Match>
           <Match when={decoded()?.type === "nevent"}>
             <>
-              <div class={className} style={{ margin: "6px 0" }}>
-                <span
-                  class={className}
-                  style={{ "font-weight": "bold", "font-size": "smaller" }}
-                >
-                  [id]
-                </span>
-                <CopyButton text={(decoded()?.data as nip19.EventPointer).id} />
-              </div>
+              <Content
+                content={(decoded()?.data as nip19.EventPointer).id}
+                title={"id"}
+              />
+
               <Show when={(decoded()?.data as nip19.EventPointer).relays}>
                 <div class={className} style={{ margin: "6px 0" }}>
                   <span
@@ -97,38 +86,25 @@ export default function DecodableContent({ content }: { content: string }) {
                 </div>
               </Show>
               <Show when={(decoded()?.data as nip19.EventPointer).kind}>
-                <div class={className} style={{ margin: "6px 0" }}>
-                  <span
-                    class={className}
-                    style={{ "font-weight": "bold", "font-size": "smaller" }}
-                  >
-                    [kind]
-                  </span>
-                  <CopyButton
-                    text={
-                      (
-                        decoded()?.data as nip19.EventPointer
-                      )?.kind?.toString() ?? ""
-                    }
-                  />
-                </div>
+                <Content
+                  content={
+                    (decoded()?.data as nip19.EventPointer)?.kind?.toString() ??
+                    ""
+                  }
+                  title={"kind"}
+                />
               </Show>
               <Show when={(decoded()?.data as nip19.EventPointer).author}>
-                <div class={className} style={{ margin: "6px 0" }}>
-                  <span
-                    class={className}
-                    style={{ "font-weight": "bold", "font-size": "smaller" }}
-                  >
-                    [author]
-                  </span>
-                  <CopyButton
-                    text={(decoded()?.data as nip19.EventPointer)?.author ?? ""}
-                  />
-                </div>
+                <Content
+                  content={
+                    (decoded()?.data as nip19.EventPointer)?.author ?? ""
+                  }
+                  title={"author"}
+                />
               </Show>
               <hr />
-              <CopyButton
-                text={nip19.noteEncode(
+              <Content
+                content={nip19.noteEncode(
                   (decoded()?.data as nip19.EventPointer).id
                 )}
               />
@@ -136,41 +112,20 @@ export default function DecodableContent({ content }: { content: string }) {
           </Match>
           <Match when={decoded()?.type === "naddr"}>
             <>
-              <div class={className} style={{ margin: "6px 0" }}>
-                <span
-                  class={className}
-                  style={{ "font-weight": "bold", "font-size": "smaller" }}
-                >
-                  [identifier]
-                </span>
-                <CopyButton
-                  text={(decoded()?.data as nip19.AddressPointer).identifier}
-                />
-              </div>
-              <div class={className} style={{ margin: "6px 0" }}>
-                <span
-                  class={className}
-                  style={{ "font-weight": "bold", "font-size": "smaller" }}
-                >
-                  [kind]
-                </span>
-                <CopyButton
-                  text={(
-                    decoded()?.data as nip19.AddressPointer
-                  ).kind.toString()}
-                />
-              </div>
-              <div class={className} style={{ margin: "6px 0" }}>
-                <span
-                  class={className}
-                  style={{ "font-weight": "bold", "font-size": "smaller" }}
-                >
-                  [pubkey]
-                </span>
-                <CopyButton
-                  text={(decoded()?.data as nip19.AddressPointer).pubkey}
-                />
-              </div>
+              <Content
+                content={(decoded()?.data as nip19.AddressPointer).identifier}
+                title={"identifier"}
+              />
+              <Content
+                content={(
+                  decoded()?.data as nip19.AddressPointer
+                ).kind.toString()}
+                title={"kind"}
+              />
+              <Content
+                content={(decoded()?.data as nip19.AddressPointer).pubkey}
+                title={"pubkey"}
+              />
 
               <Show when={(decoded()?.data as nip19.AddressPointer).relays}>
                 <div class={className} style={{ margin: "6px 0" }}>
@@ -189,58 +144,42 @@ export default function DecodableContent({ content }: { content: string }) {
                   />
                 </div>
               </Show>
-              <div class={className} style={{ margin: "6px 0" }}>
-                <span
-                  class={className}
-                  style={{ "font-weight": "bold", "font-size": "smaller" }}
-                >
-                  ['a' tag]
-                </span>
-                <CopyButton
-                  text={`${(
-                    decoded()?.data as nip19.AddressPointer
-                  ).kind.toString()}:${
-                    (decoded()?.data as nip19.AddressPointer).pubkey
-                  }:${(decoded()?.data as nip19.AddressPointer).identifier}`}
-                />
-              </div>
+              <Content
+                content={`${(
+                  decoded()?.data as nip19.AddressPointer
+                ).kind.toString()}:${
+                  (decoded()?.data as nip19.AddressPointer).pubkey
+                }:${(decoded()?.data as nip19.AddressPointer).identifier}`}
+                title={"'a' tag"}
+              />
             </>
           </Match>
           <Match when={decoded()?.type === "nsec"}>
             <>
-              <CopyButton
-                style={{ margin: "6px 0" }}
-                text={(decoded()?.data as Uint8Array).toString()}
+              <Content
+                content={(decoded()?.data as Uint8Array).toString()}
+                title={"Uint8Array"}
               />
-              <CopyButton
-                style={{ margin: "6px 0" }}
-                text={bytesToHex(decoded()?.data as Uint8Array)}
-              />
+              <Content content={bytesToHex(decoded()?.data as Uint8Array)} />
             </>
           </Match>
           <Match when={decoded()?.type === "npub"}>
             <>
-              <CopyButton
-                style={{ margin: "6px 0" }}
-                text={decoded()?.data as string}
-              />
-              <CopyButton
-                style={{ margin: "6px 0" }}
-                text={nip19.nprofileEncode({
+              <Content content={decoded()?.data as string} />
+              <Content
+                content={nip19.nprofileEncode({
                   pubkey: decoded()?.data as string,
                 })}
+                title={"nprofile"}
               />
             </>
           </Match>
           <Match when={decoded()?.type === "note"}>
             <>
-              <CopyButton
-                style={{ margin: "6px 0" }}
-                text={decoded()?.data as string}
-              />{" "}
-              <CopyButton
-                style={{ margin: "6px 0" }}
-                text={nip19.neventEncode({ id: decoded()?.data as string })}
+              <Content content={decoded()?.data as string} />
+              <Content
+                content={nip19.neventEncode({ id: decoded()?.data as string })}
+                title={"nevent"}
               />
             </>
           </Match>

@@ -2,6 +2,7 @@ import { className, nip33Regex } from "@/util";
 import { nip19 } from "nostr-tools";
 import { Accessor, Show, createMemo } from "solid-js";
 import CopyButton from "./CopyButton";
+import Content from "./Content";
 
 export default function Nip33AtagContent({ content }: { content: string }) {
   // const matches = content.match(nip33Regex);
@@ -23,49 +24,18 @@ export default function Nip33AtagContent({ content }: { content: string }) {
   });
   return (
     <>
-      <div class={className} style={{ margin: "6px 0" }}>
-        <span
-          class={className}
-          style={{ "font-weight": "bold", "font-size": "smaller" }}
-        >
-          [naddr]
-        </span>
-        <CopyButton
-          text={
-            naddr() !== undefined
-              ? nip19.naddrEncode(naddr() as nip19.AddressPointer)
-              : ""
-          }
-        />
-      </div>
-      <div class={className} style={{ margin: "6px 0" }}>
-        <span
-          class={className}
-          style={{ "font-weight": "bold", "font-size": "smaller" }}
-        >
-          [identifier]
-        </span>
-        <CopyButton text={naddr()?.identifier ?? ""} />
-      </div>
-      <div class={className} style={{ margin: "6px 0" }}>
-        <span
-          class={className}
-          style={{ "font-weight": "bold", "font-size": "smaller" }}
-        >
-          [kind]
-        </span>
-        <CopyButton text={naddr()?.kind?.toString() ?? ""} />
-      </div>
-      <div class={className} style={{ margin: "6px 0" }}>
-        <span
-          class={className}
-          style={{ "font-weight": "bold", "font-size": "smaller" }}
-        >
-          [pubkey]
-        </span>
-        <CopyButton text={naddr()?.pubkey ?? ""} />
-      </div>
-
+      {" "}
+      <Content
+        content={
+          naddr() !== undefined
+            ? nip19.naddrEncode(naddr() as nip19.AddressPointer)
+            : ""
+        }
+        title={"naddr"}
+      />
+      <Content content={naddr()?.identifier ?? ""} title={"identifier"} />
+      <Content content={naddr()?.kind?.toString() ?? ""} title={"kind"} />
+      <Content content={naddr()?.pubkey ?? ""} title={"pubkey"} />
       <Show when={naddr()?.relays}>
         <div class={className} style={{ margin: "6px 0" }}>
           <span
@@ -77,19 +47,12 @@ export default function Nip33AtagContent({ content }: { content: string }) {
           <CopyButton text={naddr()?.relays?.join(", ") || "no data"} />
         </div>
       </Show>
-      <div class={className} style={{ margin: "6px 0" }}>
-        <span
-          class={className}
-          style={{ "font-weight": "bold", "font-size": "smaller" }}
-        >
-          ['a' tag]
-        </span>
-        <CopyButton
-          text={`${naddr()?.kind.toString()}:${naddr()?.pubkey}:${
-            naddr()?.identifier
-          }`}
-        />
-      </div>
+      <Content
+        content={`${naddr()?.kind.toString()}:${naddr()?.pubkey}:${
+          naddr()?.identifier
+        }`}
+        title={"'a' tag"}
+      />
     </>
   );
 }
