@@ -22,7 +22,7 @@
   transition: 0.2s;
 }
 .hint:hover {
-  //background-color: #8caeff;
+  background-color: #5789ff;
   box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.35);
 }
 .hint:active {

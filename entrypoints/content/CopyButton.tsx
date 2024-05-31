@@ -70,7 +70,16 @@ export default function CopyButton({ text, style }: CopyButtonProps) {
       <span class={className} style={{ "font-size": "smaller" }}>
         {typeof text === "string" ? text : text()}
       </span>
-      <Button onClick={copy} style={{ "margin-left": "4px", padding: "0" }}>
+      <Button
+        onClick={copy}
+        style={{
+          "margin-left": "4px",
+          padding: "0 2px ",
+          "border-radius": "100%",
+
+          "vertical-align": "middle",
+        }}
+      >
         <Show when={copied()} fallback={<>{copyIcon}</>}>
           <>{copiedIcon}</>
         </Show>
