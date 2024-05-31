@@ -33,7 +33,13 @@ export default function RelayHints({
   };
   return (
     <>
-      [relay hints]
+      <span
+        class={className}
+        style={{ "font-weight": "bold", "font-size": "smaller" }}
+      >
+        [relay hints]
+      </span>
+
       <Show when={relayHints().length > 0}>
         <div
           class={`${className} `}
@@ -55,16 +61,21 @@ export default function RelayHints({
           </For>
         </div>
       </Show>
-      <input
-        class={`${className} ${invalid() ? "invalidInput" : "relayInput"}`}
-        placeholder="wss://"
-        type="text"
-        value={inputRelayHint()}
-        onInput={(e) => setInputRelayHint(e.currentTarget.value)}
-      ></input>
-      <button class={`${className} hint`} onclick={handleClickAdd}>
-        add relay hint
-      </button>
+      <div
+        class={`${className} `}
+        style={{ display: "grid", "grid-template-columns": " 1fr auto" }}
+      >
+        <input
+          class={`${className} ${invalid() ? "invalidInput" : "relayInput"}`}
+          placeholder="wss://"
+          type="text"
+          value={inputRelayHint()}
+          onInput={(e) => setInputRelayHint(e.currentTarget.value)}
+        ></input>
+        <button class={`${className} hint`} onclick={handleClickAdd}>
+          add relay hint
+        </button>
+      </div>
     </>
   );
 }

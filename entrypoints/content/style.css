@@ -12,15 +12,21 @@
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #608fff;
+  background-color: #447cff;
   cursor: pointer;
   transition: border-color 0.25s;
   color: #ffffff;
   margin: 2px;
   padding: 0 2px;
+  width: "fit-content";
+  transition: 0.2s;
 }
 .hint:hover {
-  background-color: #8caeff;
+  //background-color: #8caeff;
+  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.35);
+}
+.hint:active {
+  transform: scale(0.98);
 }
 .hint:focus,
 .hint:focus-visible {

@@ -39,7 +39,7 @@ export default function Nip33AtagContent({ content }: { content: string }) {
         title={"'a' tag"}
       />{" "}
       <RelayHints setRelayHints={setRelayHints} relayHints={relayHints} />
-      <hr />
+      <hr class={`${className} `} style={{ "margin-top": "0.5em" }} />
       <Content content={encodedNaddr} title={"naddr"} />
     </>
   );
