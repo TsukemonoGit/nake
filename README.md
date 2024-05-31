@@ -10,8 +10,8 @@ release の zip をブラウザの拡張機能ページのパッケージ化さ�
 
 #### popupsample
 
-![popupsample](popupsample.png)
+![popupsample](popupsample640x400.png)
 
 #### contentsample
 
-![contentsample](contentsample.png)
+![contentsample](contentsample640x400.png)

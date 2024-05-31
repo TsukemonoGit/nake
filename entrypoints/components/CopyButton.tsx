@@ -67,7 +67,10 @@ export default function CopyButton({ text, style }: CopyButtonProps) {
   };
   return (
     <div class={className} style={style}>
-      <span class={className} style={{ "font-size": "smaller" }}>
+      <span
+        class={className}
+        style={{ "font-size": "smaller", "word-break": "break-all" }}
+      >
         {typeof text === "string" ? text : text()}
       </span>
       <Button
