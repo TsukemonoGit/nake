@@ -29,7 +29,7 @@ export default function DecodableContent({ content }: { content: string }) {
   });
   const [relayHints, setRelayHints] = createSignal<string[]>(
     (decoded()?.data as ProfilePointer | EventPointer | AddressPointer)
-      .relays ?? []
+      ?.relays ?? []
   );
 
   const nprofile = createMemo(() => {
@@ -76,7 +76,7 @@ export default function DecodableContent({ content }: { content: string }) {
   });
   return (
     <>
-      <Show when={decoded() !== null}>
+      <Show when={decoded() !== null} fallback={"failed to decode"}>
         <span
           class={className}
           style={{ "font-weight": "bold", "font-size": "smaller" }}

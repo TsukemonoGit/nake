@@ -5,6 +5,7 @@ import { encodableRegex, hexRegex, nip33Regex, relayRegex } from "@/util";
 import HexContent from "../components/HexContent";
 import DecodableContent from "../components/DecodableContent";
 import Nip33AtagContent from "../components/Nip33AtagContent";
+import RelayContent from "../components/RelayContent";
 function App() {
   const [selectedText, setSelectedText] = createSignal("");
 
@@ -34,17 +35,19 @@ function App() {
   // });
 
   const nakeContent = createMemo(() => {
-    // console.log(props.content);
+    // console.log(selectedText());
     // console.log(encodableRegex.test(props.content));
     //console.log(hexRegex.test(props.content));
-    if (hexRegex.test(selectedText())) {
-      return <HexContent content={selectedText()} />;
-    } else if (encodableRegex.test(selectedText())) {
-      return <DecodableContent content={selectedText()} />;
-    } else if (nip33Regex.test(selectedText())) {
-      return <Nip33AtagContent content={selectedText()} />;
-    } else if (relayRegex.test(selectedText())) {
-      return <RelayContent content={selectedText()} />;
+    if (selectedText()) {
+      if (hexRegex.test(selectedText())) {
+        return <HexContent content={selectedText()} />;
+      } else if (encodableRegex.test(selectedText())) {
+        return <DecodableContent content={selectedText()} />;
+      } else if (nip33Regex.test(selectedText())) {
+        return <Nip33AtagContent content={selectedText()} />;
+      } else if (relayRegex.test(selectedText())) {
+        return <RelayContent content={selectedText()} />;
+      }
     } else {
       return <div>Invalid content</div>;
     }
