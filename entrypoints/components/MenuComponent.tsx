@@ -7,11 +7,12 @@ import {
   createEffect,
   Accessor,
 } from "solid-js";
-import { className, nip33Regex } from "@/util";
+import { className, nip33Regex, relayRegex } from "@/util";
 import DecodableContent from "./DecodableContent";
 import HexContent from "./HexContent";
 import { hexRegex, encodableRegex } from "@/util";
 import Nip33AtagContent from "./Nip33AtagContent";
+import RelayContent from "./RelayContent";
 
 export default function MenuComponent(props: {
   position: { top: number; left: number };
@@ -72,6 +73,8 @@ export default function MenuComponent(props: {
       return <DecodableContent content={props.content} />;
     } else if (nip33Regex.test(props.content)) {
       return <Nip33AtagContent content={props.content} />;
+    } else if (relayRegex.test(props.content)) {
+      return <RelayContent content={props.content} />;
     } else {
       return <div>Invalid content</div>;
     }

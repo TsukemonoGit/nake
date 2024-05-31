@@ -1,7 +1,13 @@
 import { render } from "solid-js/web";
-import MenuComponent from "./MenuComponent";
+import MenuComponent from "../components/MenuComponent";
 import { createSignal } from "solid-js";
-import { hexRegex, className, encodableRegex, nip33Regex } from "../../util";
+import {
+  hexRegex,
+  className,
+  encodableRegex,
+  nip33Regex,
+  relayRegex,
+} from "../../util";
 import "./style.css";
 export default defineContentScript({
   matches: ["<all_urls>"],
@@ -81,10 +87,10 @@ export default defineContentScript({
       //選択中の文字列がnakeアイコン表示する対象か?
       if (
         _selectedText &&
-        _selectedText.length >= 63 &&
         (encodableRegex.test(_selectedText) ||
           hexRegex.test(_selectedText) ||
-          nip33Regex.test(_selectedText))
+          nip33Regex.test(_selectedText) ||
+          relayRegex.test(_selectedText))
       ) {
         //アイコンを表示する場所
         const top = e.clientY + window.scrollY + 20;
@@ -126,10 +132,10 @@ export default defineContentScript({
       //選択中の文字列がnakeアイコン表示する対象か?
       if (
         _selectedText &&
-        _selectedText.length >= 63 &&
         (encodableRegex.test(_selectedText) ||
           hexRegex.test(_selectedText) ||
-          nip33Regex.test(_selectedText))
+          nip33Regex.test(_selectedText) ||
+          relayRegex.test(_selectedText))
       ) {
         //アイコンを表示する場所
         const top = e.changedTouches[0].clientY + window.scrollY + 20;
