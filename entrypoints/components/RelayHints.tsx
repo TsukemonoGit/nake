@@ -77,9 +77,8 @@ export default function RelayHints({
         }}
       >
         <input
-          class={`${className} ${
-            invalid() ? "invalidInput" : "relayInput"
-          } input`}
+          id="input"
+          class={`${className} ${invalid() ? "invalidInput" : "relayInput"} `}
           placeholder="wss://"
           type="text"
           value={inputRelayHint()}
