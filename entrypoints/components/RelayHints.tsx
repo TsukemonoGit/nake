@@ -10,7 +10,7 @@ export default function RelayHints({
 }) {
   const [inputRelayHint, setInputRelayHint] = createSignal("");
   const [invalid, setInvalid] = createSignal(false);
-  //let relayInputClass = "relayInput";
+
   const handleClickAdd = async () => {
     if (!relayRegex.test(inputRelayHint().trim())) {
       setInvalid(true);
@@ -25,12 +25,19 @@ export default function RelayHints({
       setInputRelayHint("");
     }
   };
+
   const handleClickDelete = (index: number) => {
     const newRelayHints = [...relayHints()];
     newRelayHints.splice(index, 1);
     setRelayHints(newRelayHints);
-    // setRelayHints(relayHints().filter((_, i) => i !== index));
   };
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === "Enter") {
+      handleClickAdd();
+    }
+  };
+
   return (
     <>
       <span
@@ -51,7 +58,7 @@ export default function RelayHints({
                 {item}
                 <button
                   class={`${className}`}
-                  style={{ padding: "0 4px" }}
+                  style={{ padding: "0 4px", "line-height": "normal" }}
                   onClick={() => handleClickDelete(index())}
                 >
                   ✕
@@ -63,39 +70,26 @@ export default function RelayHints({
       </Show>
       <div
         class={`${className} `}
-        style={{ display: "grid", "grid-template-columns": " 1fr auto" }}
+        style={{
+          display: "grid",
+          "grid-template-columns": " 1fr auto",
+          "margin-bottom": "0.5em",
+        }}
       >
         <input
-          class={`${className} ${invalid() ? "invalidInput" : "relayInput"}`}
+          class={`${className} ${
+            invalid() ? "invalidInput" : "relayInput"
+          } input`}
           placeholder="wss://"
           type="text"
           value={inputRelayHint()}
           onInput={(e) => setInputRelayHint(e.currentTarget.value)}
+          onKeyDown={handleKeyDown}
         ></input>
-        <button class={`${className} hint`} onclick={handleClickAdd}>
-          add relay hint
+        <button class={`${className} hint`} onClick={handleClickAdd}>
+          Add
         </button>
       </div>
     </>
   );
-}
-
-{
-  /* <Show when={(decoded()?.data as nip19.ProfilePointer)?.relays}>
-                <div class={className} style={{ margin: "6px 0" }}>
-                  <span
-                    class={className}
-                    style={{ "font-weight": "bold", "font-size": "smaller" }}
-                  >
-                    [relays]
-                  </span>
-                  <CopyButton
-                    text={
-                      (decoded()?.data as nip19.ProfilePointer)?.relays?.join(
-                        ", "
-                      ) || "no data"
-                    }
-                  />
-                </div>
-              </Show> */
 }
