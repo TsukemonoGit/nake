@@ -75,11 +75,12 @@ export default function CopyButton({ text, style }: CopyButtonProps) {
       </span>
       <Button
         onClick={copy}
+        class="copyButton"
         style={{
           "margin-left": "4px",
           padding: "0 2px ",
           "border-radius": "100%",
-          "background-color": "#fff",
+
           "vertical-align": "middle",
         }}
       >

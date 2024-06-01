@@ -38,7 +38,7 @@
 }
 .hint:hover {
   background-color: #5789ff;
-  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.35);
+  box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.35);
 }
 .hint:active {
   transform: scale(0.98);
@@ -64,4 +64,17 @@
 }
 .invalidInput {
   border-color: #ff8080 !important;
+}
+
+.copyButton {
+  background-color: rgba(0, 0, 0, 0);
+}
+.copyButton:hover {
+  opacity: 0.75;
+}
+#batuButton {
+  background-color: rgba(0, 0, 0, 0);
+}
+#batuButton:hover {
+  opacity: 0.75;
 }

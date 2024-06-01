@@ -270,7 +270,13 @@ export default function MenuComponent(props: {
                   />
                   NAKE
                 </div>
-                <button style={{ padding: "0", "align-self": "end" }}>
+                <button
+                  id="batuButton"
+                  style={{
+                    padding: "0",
+                    "align-self": "end",
+                  }}
+                >
                   ❌️
                 </button>
               </div>
