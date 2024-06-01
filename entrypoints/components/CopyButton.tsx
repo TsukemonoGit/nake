@@ -9,7 +9,6 @@ interface CopyButtonProps {
 
 export default function CopyButton({ text, style }: CopyButtonProps) {
   const [copied, setCopied] = createSignal(false);
-
   const copiedIcon = (
     <svg
       class={className}
