@@ -173,6 +173,7 @@ export default function MenuComponent(props: {
             height: "32px",
             "justify-content": "center",
             "vertical-align": "middle",
+            "background-color": "rgba(0, 0, 0,0)",
           }}
           onClick={handleClickIcon}
         >

@@ -9,6 +9,9 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 }
+.nake button {
+  border: none;
+}
 .relay {
   border-radius: 8px;
   border: 1px solid transparent;
