@@ -14,8 +14,8 @@ export default function CopyButton({ text, style }: CopyButtonProps) {
     <svg
       class={className}
       xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
     >
       <g
@@ -39,8 +39,8 @@ export default function CopyButton({ text, style }: CopyButtonProps) {
     <svg
       class={className}
       xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
+      width="20"
+      height="20"
       viewBox="0 0 24 24"
     >
       <path
@@ -79,7 +79,7 @@ export default function CopyButton({ text, style }: CopyButtonProps) {
           "margin-left": "4px",
           padding: "0 2px ",
           "border-radius": "100%",
-
+          "background-color": "#fff",
           "vertical-align": "middle",
         }}
       >
