@@ -1,7 +1,14 @@
 import { createEffect, createMemo, createSignal, onMount } from "solid-js";
 import "./App.css";
 import Icon from "@/public/wxt.svg";
-import { encodableRegex, hexRegex, nip33Regex, relayRegex } from "@/util";
+import {
+  defaultSettings,
+  encodableRegex,
+  hexRegex,
+  loadSettings,
+  nip33Regex,
+  relayRegex,
+} from "@/util";
 import HexContent from "../components/HexContent";
 import DecodableContent from "../components/DecodableContent";
 import Nip33AtagContent from "../components/Nip33AtagContent";

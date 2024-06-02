@@ -1,6 +1,54 @@
+//import { Settings, defaultSettings } from "@/util";
 import { browser } from "wxt/browser";
 
 export default defineBackground(() => {
+  browser.contextMenus.create({
+    id: "nake",
+    title: "nake 画面を開く",
+    contexts: ["selection"],
+    visible: false, // デフォルトでは非表示
+  });
+
+  browser.runtime.onConnect.addListener((port) => {
+    if (port.name !== "example") return;
+    port.onMessage.addListener((message) => {
+      console.log(message);
+
+      browser.contextMenus.update("nake", { visible: message });
+
+      browser.contextMenus.onClicked.addListener(function (info, tab) {
+        switch (info.menuItemId) {
+          case "nake":
+            port.postMessage(true);
+            break;
+        }
+      });
+    });
+    return true;
+  });
+  // const unwatch = storage.watch<object>(
+  //   "local:appSettings",
+  //   (newSettingsStr, oldSettingsStr) => {
+  //     console.log("appSettings changed:", { newSettingsStr, oldSettingsStr });
+  // port.onMessage.addListener((message) => {
+  //   console.log("Popup recieved:", message);
+  // });
+  // console.log("Popup sending:", "ping");
+  // port.postMessage(JSON.stringify(newSettingsStr));
+  // const unwatch = storage.watch<object>(
+  //   "local:appSettings",
+  //   (newSettingsStr, oldSettingsStr) => {
+  //     console.log("appSettings changed:", { newSettingsStr, oldSettingsStr });
+  //   }
+  // );
+  // browser.runtime.onConnect.addListener((port) => {
+  //   if (port.name !== "example") return;
+  //   port.onMessage.addListener((message) => {
+  //     console.log("Background recieved:", message);
+  //     console.log("Background sending:", "pong");
+  //     port.postMessage("pong");
+  //   });
+  // });
   //   browser.runtime.onMessage.addListener(async function (
   //     message: any,
   //     sender: any,
@@ -22,7 +70,6 @@ export default defineBackground(() => {
   //     return true;
   //   });
 });
-
 // browser.runtime.onMessage.addListener((message, sender) => {
 //   if (message.action === "getClipboardText") {
 //     readClipboardText().then((text) => {
@@ -41,8 +88,8 @@ export default defineBackground(() => {
 //   }
 // }
 // browser.contextMenus.create({
-//   id: "mainMenu",
-//   title: "Main Menu",
+//   id: "nake",
+//   title: "nake 画面を開く",
 //   contexts: ["selection"],
 // });
 // // コンテンツスクリプトからのメッセージを待ち受ける

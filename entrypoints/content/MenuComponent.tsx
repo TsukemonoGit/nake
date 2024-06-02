@@ -6,13 +6,20 @@ import {
   onCleanup,
   createEffect,
   Accessor,
+  onMount,
 } from "solid-js";
-import { className, nip33Regex, relayRegex } from "@/util";
-import DecodableContent from "./DecodableContent";
-import HexContent from "./HexContent";
+import {
+  className,
+  defaultSettings,
+  loadSettings,
+  nip33Regex,
+  relayRegex,
+} from "@/util";
+import DecodableContent from "../components/DecodableContent";
+import HexContent from "../components/HexContent";
 import { hexRegex, encodableRegex } from "@/util";
-import Nip33AtagContent from "./Nip33AtagContent";
-import RelayContent from "./RelayContent";
+import Nip33AtagContent from "../components/Nip33AtagContent";
+import RelayContent from "../components/RelayContent";
 
 export default function MenuComponent(props: {
   position: { top: number; left: number };
@@ -30,6 +37,15 @@ export default function MenuComponent(props: {
     //console.log(e);
     checkOverflow();
   };
+
+  const [settings, setSettings] = createSignal(defaultSettings);
+  onMount(async () => {
+    const settings = await loadSettings();
+    if (settings) {
+      setSettings(settings);
+      console.log(settings);
+    }
+  });
 
   let overflowCheck: HTMLDivElement | null = null;
   let nakeButton: HTMLButtonElement | null = null;
@@ -159,32 +175,34 @@ export default function MenuComponent(props: {
           "box-shadow": "2px 2px 10px 0px rgba(0, 0, 0, 0.35)",
         }}
       >
-        <button
-          ref={(el) => {
-            nakeButton = el;
-          }}
-          id="selectionMenu"
-          class={props.className}
-          type="button"
-          style={{
-            padding: "4px",
-            display: "flex",
-            width: "32px",
-            height: "32px",
-            "justify-content": "center",
-            "vertical-align": "middle",
-            "background-color": "rgba(0, 0, 0,0)",
-          }}
-          onClick={handleClickIcon}
-        >
-          <img
-            width={24}
-            height={24}
+        <Show when={settings().showIconOnTextSelect}>
+          <button
+            ref={(el) => {
+              nakeButton = el;
+            }}
+            id="selectionMenu"
             class={props.className}
-            src={Icon}
-            alt="Translate"
-          />
-        </button>
+            type="button"
+            style={{
+              padding: "4px",
+              display: "flex",
+              width: "32px",
+              height: "32px",
+              "justify-content": "center",
+              "vertical-align": "middle",
+              "background-color": "rgba(0, 0, 0,0)",
+            }}
+            onClick={handleClickIcon}
+          >
+            <img
+              width={24}
+              height={24}
+              class={props.className}
+              src={Icon}
+              alt="Translate"
+            />
+          </button>
+        </Show>
         <Show when={props.isOpen()}>
           <div
             ref={(el) => {

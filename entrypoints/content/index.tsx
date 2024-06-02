@@ -1,5 +1,5 @@
 import { render } from "solid-js/web";
-import MenuComponent from "../components/MenuComponent";
+import MenuComponent from "./MenuComponent";
 import { createSignal } from "solid-js";
 import {
   hexRegex,
@@ -11,14 +11,28 @@ import {
 import "./style.css";
 export default defineContentScript({
   matches: ["<all_urls>"],
-
   async main(ctx: any) {
     const [menuPosition, setMenuPosition] = createSignal({ top: 0, left: 0 });
     const [selectedText, setSelectedText] = createSignal("");
     const [isOpen, setIsOpen] = createSignal(false);
     const [menuOpen, setMenuOpen] = createSignal(false);
+
     let isTouch = false;
-    //const hexRegex = /^[0-9a-fA-F]{64}$/;
+
+    const port = browser.runtime.connect({ name: "example" });
+    port.onMessage.addListener((message) => {
+      console.log("Popup recieved:", message);
+      if (message) {
+        setIsOpen(true);
+        setMenuOpen(true);
+      }
+    });
+
+    // port.onMessage.addListener((message) => {
+    //   console.log("Popup recieved:", message);
+    // });
+    // console.log("Popup sending:", "ping");
+    // port.postMessage("ping");
 
     const ui = createIntegratedUi(ctx, {
       //createShadowRootUi
@@ -92,6 +106,7 @@ export default defineContentScript({
           nip33Regex.test(_selectedText) ||
           relayRegex.test(_selectedText))
       ) {
+        port.postMessage(true);
         //アイコンを表示する場所
         const top = e.clientY + window.scrollY + 20;
         const left = e.clientX + window.scrollX + 10;
@@ -101,6 +116,7 @@ export default defineContentScript({
         setMenuOpen(true);
         // console.log(_selectedText);
       } else {
+        port.postMessage(false);
         setIsOpen(false);
         setMenuOpen(false);
         setSelectedText("");
