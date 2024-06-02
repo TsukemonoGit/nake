@@ -73,6 +73,7 @@ function App() {
         NAKE
       </h2>
       <input
+        class={"nakeInput"}
         style={{ margin: "1em 0", "min-width": "350px", "max-width": "90vw" }}
         type="text"
         placeholder="hex or note1,npub1,..."

@@ -74,7 +74,7 @@ export default function CopyButton({ text, style }: CopyButtonProps) {
       </span>
       <Button
         onClick={copy}
-        class="copyButton"
+        class="nakeCopyButton"
         style={{
           "margin-left": "4px",
           padding: "0 2px ",

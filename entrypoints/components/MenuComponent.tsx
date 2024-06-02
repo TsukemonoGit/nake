@@ -272,7 +272,7 @@ export default function MenuComponent(props: {
                   NAKE
                 </div>
                 <button
-                  id="batuButton"
+                  id="nakeBatuButton"
                   style={{
                     padding: "0",
                     "align-self": "end",

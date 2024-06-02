@@ -1,5 +1,12 @@
 import { className, relayRegex } from "@/util";
-import { Accessor, For, Setter, Show, createSignal } from "solid-js";
+import {
+  Accessor,
+  For,
+  Setter,
+  Show,
+  createMemo,
+  createSignal,
+} from "solid-js";
 
 export default function RelayHints({
   setRelayHints,
@@ -37,7 +44,11 @@ export default function RelayHints({
       handleClickAdd();
     }
   };
-
+  const inputStyle = createMemo(() => {
+    return invalid()
+      ? { border: "1px solid #ff8080" }
+      : { border: "1px solid #8caeff" };
+  });
   return (
     <>
       <span
@@ -54,7 +65,7 @@ export default function RelayHints({
         >
           <For each={relayHints()}>
             {(item, index) => (
-              <div class={`${className} relay`}>
+              <div class={`${className} nakeRelay`}>
                 {item}
                 <button
                   class={`${className}`}
@@ -77,15 +88,16 @@ export default function RelayHints({
         }}
       >
         <input
-          id="input"
-          class={`${className} ${invalid() ? "invalidInput" : "relayInput"} `}
+          id="nakeInput"
+          class={`${className}`}
+          style={inputStyle()}
           placeholder="wss://"
           type="text"
           value={inputRelayHint()}
           onInput={(e) => setInputRelayHint(e.currentTarget.value)}
           onKeyDown={handleKeyDown}
         ></input>
-        <button class={`${className} hint`} onClick={handleClickAdd}>
+        <button class={`${className} nakeHint`} onClick={handleClickAdd}>
           Add
         </button>
       </div>

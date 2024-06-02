@@ -12,7 +12,7 @@
 .nake button {
   border: none;
 }
-.relay {
+.nakeRelay {
   border-radius: 8px;
   border: 1px solid transparent;
   margin: 2px;
@@ -22,7 +22,7 @@
   font-size: smaller;
   height: fit-content;
 }
-.hint {
+.nakeHint {
   border-radius: 8px;
   border: 1px solid transparent;
   font-size: medium;
@@ -39,45 +39,39 @@
   width: "fit-content";
   transition: 0.2s;
 }
-.hint:hover {
+.nakeHint:hover {
   background-color: #5789ff;
   box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.35);
 }
-.hint:active {
+.nakeHint:active {
   transform: scale(0.98);
 }
-.hint:focus,
-.hint:focus-visible {
+.nakeHint:focus,
+.nakeHint:focus-visible {
 }
 
-#input {
+#nakeInput {
   padding: 0 2px !important;
   border-radius: 4px !important;
-  border: 1px solid #8caeff !important;
+
   background-color: #fff !important;
   color: #000 !important;
   height: 2em !important;
   font-size: medium;
 }
-#input::placeholder {
+#nakeInput::placeholder {
   opacity: 0.5;
 }
-.relayInput {
-  border-color: #8caeff;
-}
-.invalidInput {
-  border-color: #ff8080 !important;
-}
 
-.copyButton {
+.nakeCopyButton {
   background-color: rgba(0, 0, 0, 0);
 }
-.copyButton:hover {
+.nakeCopyButton:hover {
   opacity: 0.75;
 }
-#batuButton {
+#nakeBatuButton {
   background-color: rgba(0, 0, 0, 0);
 }
-#batuButton:hover {
+#nakeBatuButton:hover {
   opacity: 0.75;
 }
