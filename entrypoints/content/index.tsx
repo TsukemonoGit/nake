@@ -16,23 +16,16 @@ export default defineContentScript({
     const [selectedText, setSelectedText] = createSignal("");
     const [isOpen, setIsOpen] = createSignal(false);
     const [menuOpen, setMenuOpen] = createSignal(false);
+    const [isTouch, setIsTouch] = createSignal(false);
 
-    let isTouch = false;
-
-    const port = browser.runtime.connect({ name: "example" });
+    const port = browser.runtime.connect({ name: "content" });
+    port.postMessage("ping");
     port.onMessage.addListener((message) => {
-      console.log("Popup recieved:", message);
       if (message) {
         setIsOpen(true);
         setMenuOpen(true);
       }
     });
-
-    // port.onMessage.addListener((message) => {
-    //   console.log("Popup recieved:", message);
-    // });
-    // console.log("Popup sending:", "ping");
-    // port.postMessage("ping");
 
     const ui = createIntegratedUi(ctx, {
       //createShadowRootUi
@@ -66,119 +59,80 @@ export default defineContentScript({
       },
     });
     ui.mount();
-    //
-    // document.addEventListener("selectionchange", async (e) => {
-    //   //このeでは何をクリックされたか検知できない市メニュー内クリックしたときもセレクトが切れるからだめ
-    //   if (selectedText()) {
-    //     setSelectedText("");
-    //   }
-    // });
-    document.addEventListener("mouseup", async (e) => {
-      if (isTouch) {
-        return;
-      }
-      // console.log(e);
+
+    document.addEventListener("mouseup", handleMouseUp);
+    document.addEventListener("touchend", handleTouchEnd);
+
+    function handleMouseUp(e: MouseEvent) {
+      if (isTouch()) return;
+      handleSelection(e);
+    }
+
+    function handleTouchEnd(e: TouchEvent) {
+      setIsTouch(true);
+      handleSelection(e);
+    }
+
+    function handleSelection(e: MouseEvent | TouchEvent) {
       const targetElement = e.target as HTMLElement;
 
-      //menu開く（nake詳細表示）
       if (targetElement.closest("#selectionMenu")) {
         setIsOpen(true);
         return;
       }
-
-      //nake開いててnake外だったら閉じる
+      //nake開いてる状態でのクリックの場合
       if (isOpen()) {
-        if (!targetElement.classList.contains(className)) {
-          setIsOpen(false);
-          setMenuOpen(false);
-          setSelectedText("");
+        //クリックしたのがnakeだったらなにもしない
+        if (targetElement.classList.contains(className)) {
+          return;
+        } else {
+          //クリックしたのがnake外だったら閉じる
+          closeMenu();
           return;
         }
-        return;
       }
-      const _selectedText = window?.getSelection()?.toString().trim();
 
-      //選択中の文字列がnakeアイコン表示する対象か?
-      if (
-        _selectedText &&
-        (encodableRegex.test(_selectedText) ||
-          hexRegex.test(_selectedText) ||
-          nip33Regex.test(_selectedText) ||
-          relayRegex.test(_selectedText))
-      ) {
-        port.postMessage(true);
-        //アイコンを表示する場所
-        const top = e.clientY + window.scrollY + 20;
-        const left = e.clientX + window.scrollX + 10;
-        setMenuPosition({ top, left });
+      const _selectedText = window.getSelection()?.toString().trim();
+      if (_selectedText && isValidText(_selectedText)) {
+        port.postMessage({ visible: true });
+        const position = getMenuPosition(e);
+        setMenuPosition(position);
         setSelectedText(_selectedText);
-        //メニュー表示
         setMenuOpen(true);
-        // console.log(_selectedText);
       } else {
-        port.postMessage(false);
-        setIsOpen(false);
-        setMenuOpen(false);
-        setSelectedText("");
+        port.postMessage({ visible: false });
+        closeMenu();
       }
-    });
-    document.addEventListener("touchend", async (e) => {
-      isTouch = true;
-      //console.log(e);
-      const targetElement = e.target as HTMLElement;
+    }
 
-      //menu開く（nake詳細表示）
-      if (targetElement.closest("#selectionMenu")) {
-        setIsOpen(true);
-        return;
+    function getMenuPosition(e: MouseEvent | TouchEvent) {
+      if (e instanceof MouseEvent) {
+        return {
+          top: e.clientY + window.scrollY + 20,
+          left: e.clientX + window.scrollX + 10,
+        };
+      } else if (e instanceof TouchEvent) {
+        return {
+          top: e.changedTouches[0].clientY + window.scrollY + 20,
+          left: e.changedTouches[0].clientX + window.scrollX + 10,
+        };
       }
+      return { top: 0, left: 0 };
+    }
 
-      //nake開いててnake外だったら閉じる
-      if (isOpen()) {
-        if (!targetElement.classList.contains(className)) {
-          setIsOpen(false);
-          setMenuOpen(false);
-          setSelectedText("");
-          return;
-        }
-        return;
-      }
-      const _selectedText = window?.getSelection()?.toString().trim();
+    function isValidText(text: string) {
+      return (
+        encodableRegex.test(text) ||
+        hexRegex.test(text) ||
+        nip33Regex.test(text) ||
+        relayRegex.test(text)
+      );
+    }
 
-      //選択中の文字列がnakeアイコン表示する対象か?
-      if (
-        _selectedText &&
-        (encodableRegex.test(_selectedText) ||
-          hexRegex.test(_selectedText) ||
-          nip33Regex.test(_selectedText) ||
-          relayRegex.test(_selectedText))
-      ) {
-        //アイコンを表示する場所
-        const top = e.changedTouches[0].clientY + window.scrollY + 20;
-        const left = e.changedTouches[0].clientX + window.scrollX + 10;
-        setMenuPosition({ top, left });
-        setSelectedText(_selectedText);
-        //メニュー表示
-        setMenuOpen(true);
-        // console.log(_selectedText);
-      } else {
-        setIsOpen(false);
-        setMenuOpen(false);
-        setSelectedText("");
-      }
-    });
-    // document.addEventListener("mousedown", function (event) {
-    //   const targetElement = event.target as HTMLElement;
-    //   console.log(targetElement.nodeName);
-    //   console.log(targetElement.nodeType);
-    //   console.log(targetElement.children);
-    //   console.log(targetElement.parentNode);
-    //   console.log(targetElement.childNodes);
-    //   if (!targetElement.closest("#selectionMenu")) {
-    //     ui.remove();
-    //   }
-    // });
-
-    //main
+    function closeMenu() {
+      setIsOpen(false);
+      setMenuOpen(false);
+      setSelectedText("");
+    }
   },
 });
