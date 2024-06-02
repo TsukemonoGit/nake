@@ -10,6 +10,6 @@ export default defineConfig({
     plugins: [Solid()],
   }),
   manifest: {
-    permissions: ["storage", "contextMenus", "nativeMessaging"],
+    permissions: ["storage", "contextMenus"],
   },
 });
