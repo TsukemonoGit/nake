@@ -10,6 +10,6 @@ export default defineConfig({
     plugins: [Solid()],
   }),
   manifest: {
-    permissions: [],
+    permissions: ["storage", "contextMenus"],
   },
 });

@@ -1,73 +1,62 @@
-import { browser } from "wxt/browser";
+import { Menus, Runtime, browser } from "wxt/browser";
 
 export default defineBackground(() => {
-  //   browser.runtime.onMessage.addListener(async function (
-  //     message: any,
-  //     sender: any,
-  //     sendResponse: any
-  //   ) {
-  //     console.log(message);
-  //     if (message.message === "copy") {
-  //       console.log(message.message);
-  //       try {
-  //         const text = await navigator.clipboard.readText();
-  //         console.log(text);
-  //         sendResponse({ result: text });
-  //       } catch (error) {
-  //         console.log(error);
-  //         sendResponse({ error: "error" });
-  //       }
-  //     }
-  //     // 非同期レスポンスを有効にするために、trueを返す
-  //     return true;
-  //   });
+  initializeContextMenu();
+
+  browser.runtime.onConnect.addListener(handlePortConnection);
 });
 
-// browser.runtime.onMessage.addListener((message, sender) => {
-//   if (message.action === "getClipboardText") {
-//     readClipboardText().then((text) => {
-//       return text;
-//     });
-//   }
-//   return true; // 非同期レスポンスを返すためにtrueを返す
-// });
-// async function readClipboardText() {
-//   try {
-//     const text = await workerNavigator.clipboard?.readText();
-//     return text;
-//   } catch (error) {
-//     console.error("Failed to read clipboard text:", error);
-//     return null;
-//   }
-// }
-// browser.contextMenus.create({
-//   id: "mainMenu",
-//   title: "Main Menu",
-//   contexts: ["selection"],
-// });
-// // コンテンツスクリプトからのメッセージを待ち受ける
-// browser.runtime.onMessage.addListener((message, sender) => {
-//   console.log(message);
-//   if (message.action === "showMenu" && message.selectedText) {
-//     //   await browser.storage.local.set({ selectedText: info.selectionText });
-//     // await browser.browserAction.openPopup();
-//     console.log(message.selectionText);
-//     // const url = `https://example.com/search?q=${encodedText}`;
-//     // await browser.tabs.create({ url });
-//     // サブメニューを作成
-//     browser.contextMenus.create({
-//       id: "subMenu",
-//       parentId: "mainMenu", // メインメニューの下に表示する
-//       title: message.selectionText,
-//       contexts: ["selection"],
-//     });
-//     // サブメニューがクリックされたときのリスナー
-//     browser.contextMenus.onClicked.addListener((subInfo, subTab) => {
-//       if (subInfo.menuItemId === "subMenu" && subInfo.selectionText) {
-//         console.log("Sub menu clicked:", subInfo.selectionText);
-//         // ここで選択したテキストに対する処理を行う
-//       }
-//     });
-//   }
-// });
-//});
+/**
+ * コンテキストメニューの初期設定を行う関数
+ */
+function initializeContextMenu(): void {
+  browser.contextMenus.create({
+    id: "nake",
+    title: "open nake",
+    contexts: ["selection"],
+    visible: false, // デフォルトでは非表示
+  });
+}
+
+/**
+ * ポート接続時の処理を行う関数
+ * @param port - 接続されたポートオブジェクト
+ */
+function handlePortConnection(port: Runtime.Port): void {
+  if (port.name === "content") {
+    port.onMessage.addListener((message) =>
+      handleMessageFromContentScript(message, port)
+    );
+  }
+}
+
+/**
+ * コンテンツスクリプトからのメッセージを処理する関数
+ * @param message - 受信したメッセージオブジェクト
+ * @param port - 接続されたポートオブジェクト
+ */
+function handleMessageFromContentScript(
+  message: any,
+  port: Runtime.Port
+): void {
+  if (typeof message === "object" && message.hasOwnProperty("visible")) {
+    browser.contextMenus.update("nake", { visible: message.visible });
+  }
+  browser.contextMenus.onClicked.addListener((info, tab) =>
+    handleContextMenuClick(info, port)
+  );
+}
+
+/**
+ * コンテキストメニューがクリックされたときの処理を行う関数
+ * @param info - クリックイベント情報
+ * @param port - 接続されたポートオブジェクト
+ */
+function handleContextMenuClick(
+  info: Menus.OnClickData,
+  port: Runtime.Port
+): void {
+  if (info.menuItemId === "nake") {
+    port.postMessage(true);
+  }
+}
