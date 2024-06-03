@@ -1,14 +1,7 @@
-import { createEffect, createMemo, createSignal, onMount } from "solid-js";
+import { createMemo, createSignal } from "solid-js";
 import "./App.css";
-import Icon from "@/public/wxt.svg";
-import {
-  defaultSettings,
-  encodableRegex,
-  hexRegex,
-  loadSettings,
-  nip33Regex,
-  relayRegex,
-} from "@/util";
+import Icon from "@/wxt.svg";
+import { encodableRegex, hexRegex, nip33Regex, relayRegex } from "@/util";
 import HexContent from "../components/HexContent";
 import DecodableContent from "../components/DecodableContent";
 import Nip33AtagContent from "../components/Nip33AtagContent";
@@ -16,35 +9,7 @@ import RelayContent from "../components/RelayContent";
 function App() {
   const [selectedText, setSelectedText] = createSignal("");
 
-  // const readClipboardText = () => {
-  //   browser.runtime
-  //     .sendMessage({ action: "getClipboardText" })
-  //     .then((response) => {
-  //       if (response && response.text) {
-  //         // クリップボードから取得したテキストを使用してポップアップの表示を更新するなどの処理を行う
-  //         setSelectedText(response.text);
-  //       }
-  //     });
-  // };
-
-  // onMount(() => {
-  //   console.log(document.visibilityState);
-  //   if (document.visibilityState === "visible") {
-  //     readClipboardText();
-  //   }
-  // });
-
-  // document.addEventListener("visibilitychange", () => {
-  //   console.log(document.visibilityState);
-  //   if (document.visibilityState === "visible") {
-  //     readClipboardText();
-  //   }
-  // });
-
   const nakeContent = createMemo(() => {
-    // console.log(selectedText());
-    // console.log(encodableRegex.test(props.content));
-    //console.log(hexRegex.test(props.content));
     if (selectedText()) {
       if (hexRegex.test(selectedText())) {
         return <HexContent content={selectedText()} />;
@@ -59,13 +24,6 @@ function App() {
       return <div>Invalid content</div>;
     }
   });
-  // browser.runtime.sendMessage({
-  //   extensionId: browser.runtime.id,
-  //   message: "copy",
-  //   function(response: { result: any }) {
-  //     console.log(response.result);
-  //   },
-  // });
 
   return (
     <div>

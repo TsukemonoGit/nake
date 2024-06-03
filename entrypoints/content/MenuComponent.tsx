@@ -6,15 +6,8 @@ import {
   onCleanup,
   createEffect,
   Accessor,
-  onMount,
 } from "solid-js";
-import {
-  className,
-  defaultSettings,
-  loadSettings,
-  nip33Regex,
-  relayRegex,
-} from "@/util";
+import { Settings, className, nip33Regex, relayRegex } from "@/util";
 import DecodableContent from "../components/DecodableContent";
 import HexContent from "../components/HexContent";
 import { hexRegex, encodableRegex } from "@/util";
@@ -27,6 +20,7 @@ export default function MenuComponent(props: {
   isOpen: Accessor<boolean>;
   className: string;
   menuOpen: Accessor<boolean>;
+  settings: Accessor<Settings>;
 }) {
   const [pos, setPos] = createSignal({
     top: props.position.top,
@@ -37,15 +31,6 @@ export default function MenuComponent(props: {
     //console.log(e);
     checkOverflow();
   };
-
-  const [settings, setSettings] = createSignal(defaultSettings);
-  onMount(async () => {
-    const settings = await loadSettings();
-    if (settings) {
-      setSettings(settings);
-      //  console.log(settings);
-    }
-  });
 
   let overflowCheck: HTMLDivElement | null = null;
   let nakeButton: HTMLButtonElement | null = null;
@@ -175,7 +160,7 @@ export default function MenuComponent(props: {
           "box-shadow": "2px 2px 10px 0px rgba(0, 0, 0, 0.35)",
         }}
       >
-        <Show when={settings().showIconOnTextSelect}>
+        <Show when={props.settings().showIconOnTextSelect}>
           <button
             ref={(el) => {
               nakeButton = el;
