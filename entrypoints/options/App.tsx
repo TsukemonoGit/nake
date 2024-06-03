@@ -21,7 +21,7 @@ export default function App() {
 
   const handleCheckboxChange = (event: Event) => {
     const target = event.target as HTMLInputElement;
-    console.log(target.checked);
+    //  console.log(target.checked);
     const newSettings = {
       ...settings(),
       showIconOnTextSelect: target.checked,

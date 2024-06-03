@@ -1,3 +1,4 @@
+//background.ts
 import { Menus, Runtime, browser } from "wxt/browser";
 
 export default defineBackground(() => {
@@ -60,6 +61,10 @@ function handleContextMenuClick(
   port: Runtime.Port
 ): void {
   if (info.menuItemId === "openNake") {
-    port.postMessage(true);
+    try {
+      port.postMessage(true);
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

@@ -25,7 +25,10 @@ export default defineContentScript({
         setIsOpen(true);
       }
     });
-
+    port.onDisconnect.addListener(() => {
+      console.log("Port disconnected. Attempting to reconnect...");
+      port.postMessage("ping");
+    });
     const ui = createIntegratedUi(ctx, {
       //createShadowRootUi
       //  name: "menu-component",
