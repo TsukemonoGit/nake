@@ -95,6 +95,8 @@ export default defineContentScript({
       }
 
       const _selectedText = window.getSelection()?.toString().trim();
+      //portの接続切れのエラーが出るから送る直前にコネクトしてみる
+      const port = browser.runtime.connect({ name: "content" });
       if (_selectedText && isValidText(_selectedText)) {
         port.postMessage({ visible: true });
         const position = getMenuPosition(e);

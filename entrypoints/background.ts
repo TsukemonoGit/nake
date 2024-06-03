@@ -22,14 +22,23 @@ function initializeContextMenu(): void {
     });
   });
 }
+let isContentConnected = false;
 /**
  * ポート接続時の処理を行う関数
  * @param port - 接続されたポートオブジェクト
  */
 function handlePortConnection(port: Runtime.Port): void {
   if (port.name === "content") {
+    isContentConnected = true;
     port.onMessage.addListener((message) =>
       handleMessageFromContentScript(message, port)
+    );
+    port.onDisconnect.addListener(() => {
+      console.log("Port disconnected. Attempting to reconnect...");
+      isContentConnected = false;
+    });
+    browser.contextMenus.onClicked.addListener((info, tab) =>
+      handleContextMenuClick(info, port)
     );
   }
 }
@@ -46,9 +55,6 @@ function handleMessageFromContentScript(
   if (typeof message === "object" && message.hasOwnProperty("visible")) {
     browser.contextMenus.update("openNake", { visible: message.visible });
   }
-  browser.contextMenus.onClicked.addListener((info, tab) =>
-    handleContextMenuClick(info, port)
-  );
 }
 
 /**
@@ -60,11 +66,7 @@ function handleContextMenuClick(
   info: Menus.OnClickData,
   port: Runtime.Port
 ): void {
-  if (info.menuItemId === "openNake") {
-    try {
-      port.postMessage(true);
-    } catch (error) {
-      console.log(error);
-    }
+  if (info.menuItemId === "openNake" && isContentConnected) {
+    port.postMessage(true);
   }
 }
