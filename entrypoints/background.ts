@@ -1,3 +1,4 @@
+//background.ts
 import { Menus, Runtime, browser } from "wxt/browser";
 
 export default defineBackground(() => {
@@ -10,14 +11,17 @@ export default defineBackground(() => {
  * コンテキストメニューの初期設定を行う関数
  */
 function initializeContextMenu(): void {
-  browser.contextMenus.create({
-    id: "nake",
-    title: "open nake",
-    contexts: ["selection"],
-    visible: false, // デフォルトでは非表示
+  // メニュー項目が既に存在するかどうかを確認する
+  browser.contextMenus.update("openNake", { visible: false }).catch(() => {
+    // メニュー項目が存在しない場合にのみ作成
+    browser.contextMenus.create({
+      id: "openNake",
+      title: browser.i18n.getMessage("setting_visibleIcon"),
+      contexts: ["selection"],
+      visible: false, // デフォルトでは非表示
+    });
   });
 }
-
 /**
  * ポート接続時の処理を行う関数
  * @param port - 接続されたポートオブジェクト
@@ -40,7 +44,7 @@ function handleMessageFromContentScript(
   port: Runtime.Port
 ): void {
   if (typeof message === "object" && message.hasOwnProperty("visible")) {
-    browser.contextMenus.update("nake", { visible: message.visible });
+    browser.contextMenus.update("openNake", { visible: message.visible });
   }
   browser.contextMenus.onClicked.addListener((info, tab) =>
     handleContextMenuClick(info, port)
@@ -56,7 +60,11 @@ function handleContextMenuClick(
   info: Menus.OnClickData,
   port: Runtime.Port
 ): void {
-  if (info.menuItemId === "nake") {
-    port.postMessage(true);
+  if (info.menuItemId === "openNake") {
+    try {
+      port.postMessage(true);
+    } catch (error) {
+      console.log(error);
+    }
   }
 }

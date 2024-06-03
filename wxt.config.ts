@@ -11,5 +11,6 @@ export default defineConfig({
   }),
   manifest: {
     permissions: ["storage", "contextMenus"],
+    default_locale: "en",
   },
 });

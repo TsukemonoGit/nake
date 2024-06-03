@@ -43,7 +43,7 @@ export default function MenuComponent(props: {
     const settings = await loadSettings();
     if (settings) {
       setSettings(settings);
-      console.log(settings);
+      //  console.log(settings);
     }
   });
 
