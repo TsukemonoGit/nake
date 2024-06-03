@@ -1,30 +1,69 @@
 import { render } from "solid-js/web";
 import MenuComponent from "./MenuComponent";
-import { createSignal } from "solid-js";
+import { createSignal, onMount } from "solid-js";
 import {
   hexRegex,
   className,
   encodableRegex,
   nip33Regex,
   relayRegex,
+  defaultSettings,
+  loadSettings,
 } from "../../util";
 import "./style.css";
+
 export default defineContentScript({
   matches: ["<all_urls>"],
   async main(ctx: any) {
     const [menuPosition, setMenuPosition] = createSignal({ top: 0, left: 0 });
     const [selectedText, setSelectedText] = createSignal("");
-    const [isOpen, setIsOpen] = createSignal(false); //nake画面の表示
-    const [menuOpen, setMenuOpen] = createSignal(false); //選択時のアイコンの表示
+    const [isOpen, setIsOpen] = createSignal(false); // nake画面の表示
+    const [menuOpen, setMenuOpen] = createSignal(false); // 選択時のアイコンの表示
     const [isTouch, setIsTouch] = createSignal(false);
+    const [settings, setSettings] = createSignal(defaultSettings);
+    onMount(async () => {
+      const settings = await loadSettings();
+      if (settings) {
+        setSettings(settings);
+        //  console.log(settings);
+      }
+    });
+    let port = connectPort();
+
+    function connectPort() {
+      const newPort = browser.runtime.connect({ name: "content" });
+
+      newPort.postMessage("ping");
+      newPort.onMessage.addListener((message) => {
+        //backgroundからのメッセージを受け取る
+        if (typeof message === "object") {
+          if (message.hasOwnProperty("settings")) {
+            setSettings(message.settings);
+          } else if (message.hasOwnProperty("isOpen")) {
+            setIsOpen(message.isOpen);
+          }
+        }
+      });
+
+      newPort.onDisconnect.addListener(() => {
+        console.log(newPort.error?.message);
+        console.log("Port disconnected. Attempting to reconnect...");
+        port = connectPort(); // 再接続を試みる
+      });
+
+      return newPort;
+    }
+
+    function ensurePortConnection() {
+      if (!port) {
+        port = connectPort();
+      }
+    }
 
     const ui = createIntegratedUi(ctx, {
-      //createShadowRootUi
-      //  name: "menu-component",
-      position: "modal", //
+      position: "modal",
       anchor: "body",
       append: "before",
-
       onMount: (container) => {
         render(
           () => (
@@ -33,8 +72,8 @@ export default defineContentScript({
               content={selectedText()}
               isOpen={isOpen}
               className={className}
-              //onClose={() => ui.remove()}
               menuOpen={menuOpen}
+              settings={settings}
             />
           ),
           container
@@ -43,7 +82,6 @@ export default defineContentScript({
       onRemove: (unmount: any) => {
         setIsOpen(false);
         setMenuOpen(false);
-        // Unmount the app when the UI is removed
         if (unmount) {
           unmount();
         }
@@ -71,39 +109,40 @@ export default defineContentScript({
         setIsOpen(true);
         return;
       }
-      //nake開いてる状態でのクリックの場合
+
+      // nake開いてる状態でのクリックの場合
       if (isOpen()) {
-        //クリックしたのがnakeだったらなにもしない
+        // クリックしたのがnakeだったらなにもしない
         if (targetElement.classList.contains(className)) {
           return;
         } else {
-          //クリックしたのがnake外だったら閉じる
+          // クリックしたのがnake外だったら閉じる
           closeMenu();
           return;
         }
       }
 
       const _selectedText = window.getSelection()?.toString().trim();
-      //portの接続切れのエラーが出るから送る直前にコネクトしてみる
-      const port = browser.runtime.connect({ name: "content" });
-
-      port.onMessage.addListener((message) => {
-        if (message) {
-          setIsOpen(true);
-        }
-      });
-      port.onDisconnect.addListener(() => {
-        console.log("Port disconnected. Attempting to reconnect...");
-        port.postMessage("ping");
-      });
       if (_selectedText && isValidText(_selectedText)) {
-        port.postMessage({ visible: true });
+        ensurePortConnection();
+        try {
+          port.postMessage({ visible: true });
+        } catch (error) {
+          connectPort();
+          port.postMessage({ visible: true });
+        }
         const position = getMenuPosition(e);
         setMenuPosition(position);
         setSelectedText(_selectedText);
         setMenuOpen(true);
       } else {
-        port.postMessage({ visible: false });
+        ensurePortConnection();
+        try {
+          port.postMessage({ visible: false });
+        } catch (error) {
+          connectPort();
+          port.postMessage({ visible: false });
+        }
         closeMenu();
       }
     }

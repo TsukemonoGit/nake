@@ -1,4 +1,5 @@
 //background.ts
+import { Settings } from "@/util";
 import { Menus, Runtime, browser } from "wxt/browser";
 
 export default defineBackground(() => {
@@ -34,13 +35,31 @@ function handlePortConnection(port: Runtime.Port): void {
       handleMessageFromContentScript(message, port)
     );
     port.onDisconnect.addListener(() => {
-      console.log("Port disconnected. Attempting to reconnect...");
+      console.log("Port disconnected.");
       isContentConnected = false;
     });
     browser.contextMenus.onClicked.addListener((info, tab) =>
       handleContextMenuClick(info, port)
     );
+    storageWatch(port);
   }
+}
+
+function storageWatch(port: Runtime.Port) {
+  const unwatch = storage.watch<Settings>(
+    "local:appSettings",
+    (newSettings, oldSettings) => {
+      //console.log("appSettings changed:", { newSettings, oldSettings });
+      //設定変更されたときにポートが開いていたら変更を通知
+      if (isContentConnected && newSettings) {
+        try {
+          port.postMessage({ settings: newSettings });
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
+  );
 }
 
 /**
@@ -67,6 +86,10 @@ function handleContextMenuClick(
   port: Runtime.Port
 ): void {
   if (info.menuItemId === "openNake" && isContentConnected) {
-    port.postMessage(true);
+    try {
+      port.postMessage({ isOpen: true });
+    } catch (error) {
+      console.log(error);
+    }
   }
 }
