@@ -18,17 +18,6 @@ export default defineContentScript({
     const [menuOpen, setMenuOpen] = createSignal(false); //選択時のアイコンの表示
     const [isTouch, setIsTouch] = createSignal(false);
 
-    const port = browser.runtime.connect({ name: "content" });
-    port.postMessage("ping");
-    port.onMessage.addListener((message) => {
-      if (message) {
-        setIsOpen(true);
-      }
-    });
-    port.onDisconnect.addListener(() => {
-      console.log("Port disconnected. Attempting to reconnect...");
-      port.postMessage("ping");
-    });
     const ui = createIntegratedUi(ctx, {
       //createShadowRootUi
       //  name: "menu-component",
@@ -97,6 +86,16 @@ export default defineContentScript({
       const _selectedText = window.getSelection()?.toString().trim();
       //portの接続切れのエラーが出るから送る直前にコネクトしてみる
       const port = browser.runtime.connect({ name: "content" });
+
+      port.onMessage.addListener((message) => {
+        if (message) {
+          setIsOpen(true);
+        }
+      });
+      port.onDisconnect.addListener(() => {
+        console.log("Port disconnected. Attempting to reconnect...");
+        port.postMessage("ping");
+      });
       if (_selectedText && isValidText(_selectedText)) {
         port.postMessage({ visible: true });
         const position = getMenuPosition(e);
