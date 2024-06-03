@@ -10,14 +10,17 @@ export default defineBackground(() => {
  * コンテキストメニューの初期設定を行う関数
  */
 function initializeContextMenu(): void {
-  browser.contextMenus.create({
-    id: "nake",
-    title: "open nake",
-    contexts: ["selection"],
-    visible: false, // デフォルトでは非表示
+  // メニュー項目が既に存在するかどうかを確認する
+  browser.contextMenus.update("openNake", { visible: false }).catch(() => {
+    // メニュー項目が存在しない場合にのみ作成
+    browser.contextMenus.create({
+      id: "openNake",
+      title: "open nake",
+      contexts: ["selection"],
+      visible: false, // デフォルトでは非表示
+    });
   });
 }
-
 /**
  * ポート接続時の処理を行う関数
  * @param port - 接続されたポートオブジェクト

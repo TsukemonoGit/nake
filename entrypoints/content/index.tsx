@@ -22,8 +22,10 @@ export default defineContentScript({
     port.postMessage("ping");
     port.onMessage.addListener((message) => {
       if (message) {
-        setIsOpen(true);
-        setMenuOpen(true);
+        if (!menuOpen()) {
+          setIsOpen(true);
+          setMenuOpen(true);
+        }
       }
     });
 
