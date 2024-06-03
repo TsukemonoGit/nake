@@ -54,7 +54,7 @@ export default function App() {
       }}
     >
       <label class="custom-checkbox-container">
-        テキスト選択時にアイコンを表示する
+        {browser.i18n.getMessage("contextMenu_name")}
         <input
           type="checkbox"
           checked={settings().showIconOnTextSelect}

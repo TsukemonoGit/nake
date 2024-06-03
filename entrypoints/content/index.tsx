@@ -14,18 +14,15 @@ export default defineContentScript({
   async main(ctx: any) {
     const [menuPosition, setMenuPosition] = createSignal({ top: 0, left: 0 });
     const [selectedText, setSelectedText] = createSignal("");
-    const [isOpen, setIsOpen] = createSignal(false);
-    const [menuOpen, setMenuOpen] = createSignal(false);
+    const [isOpen, setIsOpen] = createSignal(false); //nake画面の表示
+    const [menuOpen, setMenuOpen] = createSignal(false); //選択時のアイコンの表示
     const [isTouch, setIsTouch] = createSignal(false);
 
     const port = browser.runtime.connect({ name: "content" });
     port.postMessage("ping");
     port.onMessage.addListener((message) => {
       if (message) {
-        if (!menuOpen()) {
-          setIsOpen(true);
-          setMenuOpen(true);
-        }
+        setIsOpen(true);
       }
     });
 

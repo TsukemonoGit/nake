@@ -15,7 +15,7 @@ function initializeContextMenu(): void {
     // メニュー項目が存在しない場合にのみ作成
     browser.contextMenus.create({
       id: "openNake",
-      title: "open nake",
+      title: browser.i18n.getMessage("setting_visibleIcon"),
       contexts: ["selection"],
       visible: false, // デフォルトでは非表示
     });
@@ -43,7 +43,7 @@ function handleMessageFromContentScript(
   port: Runtime.Port
 ): void {
   if (typeof message === "object" && message.hasOwnProperty("visible")) {
-    browser.contextMenus.update("nake", { visible: message.visible });
+    browser.contextMenus.update("openNake", { visible: message.visible });
   }
   browser.contextMenus.onClicked.addListener((info, tab) =>
     handleContextMenuClick(info, port)
@@ -59,7 +59,7 @@ function handleContextMenuClick(
   info: Menus.OnClickData,
   port: Runtime.Port
 ): void {
-  if (info.menuItemId === "nake") {
+  if (info.menuItemId === "openNake") {
     port.postMessage(true);
   }
 }
