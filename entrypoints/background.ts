@@ -35,7 +35,7 @@ function handlePortConnection(port: Runtime.Port): void {
       handleMessageFromContentScript(message, port)
     );
     port.onDisconnect.addListener(() => {
-      console.log("Port disconnected.");
+      //console.log("Port disconnected.");
       isContentConnected = false;
     });
     browser.contextMenus.onClicked.addListener((info, tab) =>
@@ -55,7 +55,7 @@ function storageWatch(port: Runtime.Port) {
         try {
           port.postMessage({ settings: newSettings });
         } catch (error) {
-          console.log(error);
+          //  console.log(error);
         }
       }
     }
@@ -89,7 +89,7 @@ function handleContextMenuClick(
     try {
       port.postMessage({ isOpen: true });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   }
 }

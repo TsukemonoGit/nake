@@ -46,8 +46,8 @@ export default defineContentScript({
       });
 
       newPort.onDisconnect.addListener(() => {
-        console.log(newPort.error?.message);
-        console.log("Port disconnected. Attempting to reconnect...");
+        // console.log(newPort.error?.message);
+        //  console.log("Port disconnected. Attempting to reconnect...");
         port = connectPort(); // 再接続を試みる
       });
 
