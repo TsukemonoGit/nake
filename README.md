@@ -2,6 +2,10 @@
 
 Nostr Army Knife webExtension
 
+[Chrome Web Store](https://chromewebstore.google.com/detail/nake/pckmdjknadbfalfohabbccmffoohlamk)
+
+[Firefox Addon Store](https://addons.mozilla.org/ja/firefox/addon/nake/)
+
 ## license
 
 - [pocket-knife icon]
