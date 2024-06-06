@@ -2,6 +2,10 @@
 
 Nostr Army Knife webExtension
 
+- conversion between nostr hexid and NIP-19 (bech32-encoded entities)
+
+- link to njump me
+
 [Chrome Web Store](https://chromewebstore.google.com/detail/nake/pckmdjknadbfalfohabbccmffoohlamk)
 
 [Firefox Addon Store](https://addons.mozilla.org/ja/firefox/addon/nake/)

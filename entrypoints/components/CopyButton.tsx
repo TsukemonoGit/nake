@@ -1,4 +1,4 @@
-import { Accessor, Show, createSignal } from "solid-js";
+import { Accessor, Show, createMemo, createSignal } from "solid-js";
 import Button from "./Button";
 import { className } from "@/util";
 import Link from "./Link";
@@ -70,6 +70,16 @@ export default function CopyButton({
       }, 2000);
     });
   };
+  const href = createMemo(() => {
+    if (text) {
+      if (typeof text === "string") {
+        return text;
+      } else {
+        return text();
+      }
+    }
+  });
+
   return (
     <div class={className} style={style}>
       <span
@@ -97,7 +107,7 @@ export default function CopyButton({
       <Show when={link === true}>
         <Link
           title={"open in njump"}
-          href={`https://njump.me/${typeof text === "string" ? text : text()}`}
+          href={`https://njump.me/${href}`}
           class={className + " nakeLinkButton"}
           style={{
             height: "fit-content",
