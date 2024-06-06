@@ -29,15 +29,24 @@ export default function Nip33AtagContent({ content }: { content: string }) {
   });
   return (
     <>
-      <Content content={naddr()?.identifier ?? ""} title={"identifier"} />
-      <Content content={naddr()?.kind?.toString() ?? ""} title={"kind"} />
-      <Content content={naddr()?.pubkey ?? ""} title={"pubkey"} />
+      <Content
+        content={naddr()?.identifier ?? ""}
+        title={"identifier"}
+        link={false}
+      />
+      <Content
+        content={naddr()?.kind?.toString() ?? ""}
+        title={"kind"}
+        link={false}
+      />
+      <Content content={naddr()?.pubkey ?? ""} title={"pubkey"} link={false} />
       <Content
         content={`${naddr()?.kind.toString()}:${naddr()?.pubkey}:${
           naddr()?.identifier
         }`}
         title={"'a' tag"}
-      />{" "}
+        link={false}
+      />
       <RelayHints setRelayHints={setRelayHints} relayHints={relayHints} />
       <hr class={`${className} `} style={{ "margin-top": "0.5em" }} />
       <Content content={encodedNaddr} title={"naddr"} />

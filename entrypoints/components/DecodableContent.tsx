@@ -89,6 +89,7 @@ export default function DecodableContent({ content }: { content: string }) {
               <Content
                 content={(decoded()?.data as nip19.ProfilePointer).pubkey}
                 title={"hex"}
+                link={false}
               />
               <RelayHints
                 setRelayHints={setRelayHints}
@@ -132,6 +133,7 @@ export default function DecodableContent({ content }: { content: string }) {
               <Content
                 content={(decoded()?.data as nip19.EventPointer).id}
                 title={"hex"}
+                link={false}
               />
 
               <RelayHints
@@ -169,16 +171,19 @@ export default function DecodableContent({ content }: { content: string }) {
               <Content
                 content={(decoded()?.data as nip19.AddressPointer).identifier}
                 title={"identifier"}
+                link={false}
               />
               <Content
                 content={(
                   decoded()?.data as nip19.AddressPointer
                 ).kind.toString()}
                 title={"kind"}
+                link={false}
               />
               <Content
                 content={(decoded()?.data as nip19.AddressPointer).pubkey}
                 title={"pubkey"}
+                link={false}
               />
 
               <RelayHints
@@ -192,6 +197,7 @@ export default function DecodableContent({ content }: { content: string }) {
                   (decoded()?.data as nip19.AddressPointer).pubkey
                 }:${(decoded()?.data as nip19.AddressPointer).identifier}`}
                 title={"'a' tag"}
+                link={false}
               />
               <hr />
               <Content content={naddr} title={"naddr"} />
@@ -202,16 +208,22 @@ export default function DecodableContent({ content }: { content: string }) {
               <Content
                 content={(decoded()?.data as Uint8Array).toString()}
                 title={"Uint8Array"}
+                link={false}
               />
               <Content
                 content={bytesToHex(decoded()?.data as Uint8Array)}
                 title={"hex"}
+                link={false}
               />
             </>
           </Match>
           <Match when={decoded()?.type === "npub"}>
             <>
-              <Content content={decoded()?.data as string} title={"hex"} />
+              <Content
+                content={decoded()?.data as string}
+                title={"hex"}
+                link={false}
+              />
               <RelayHints
                 setRelayHints={setRelayHints}
                 relayHints={relayHints}
@@ -222,7 +234,11 @@ export default function DecodableContent({ content }: { content: string }) {
           </Match>
           <Match when={decoded()?.type === "note"}>
             <>
-              <Content content={decoded()?.data as string} title={"hex"} />
+              <Content
+                content={decoded()?.data as string}
+                title={"hex"}
+                link={false}
+              />
               <RelayHints
                 setRelayHints={setRelayHints}
                 relayHints={relayHints}

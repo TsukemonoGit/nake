@@ -32,6 +32,12 @@ Nostr Army Knife webExtension
 
   (https://github.com/lucide-icons/lucide/blob/main/LICENSE)
 
+- [open-in-new-rounded icon]
+
+  Apache License Version 2.0, January 2004
+
+  (https://github.com/google/material-design-icons/blob/master/LICENSE)
+
 ## 使い方
 
 release の zip をブラウザの拡張機能ページのパッケージ化されていない拡張機能を読み込むで読み込む

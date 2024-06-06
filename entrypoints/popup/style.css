@@ -74,3 +74,36 @@ input {
   border-radius: 4px;
   border: 1px solid #aaa;
 }
+
+.nakeLinkButton {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: 0.25s;
+}
+.nakeLinkButton:hover {
+  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.35);
+  border: 1px solid #aaa;
+}
+.nakeLinkButton:focus,
+.nakeLinkButton:focus-visible {
+}
+.nakeLinkButton:active {
+  transform: scale(0.95);
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  .nakeLinkButton {
+    background-color: #f9f9f9;
+  }
+}

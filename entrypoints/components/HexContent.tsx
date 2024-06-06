@@ -67,7 +67,7 @@ export default function HecContent({ content }: { content: string }) {
       <span class={className} style={{ color: "gray", "font-size": "small" }}>
         if this is a private key:
       </span>
-      <CopyButton text={nsec()} style={{ margin: "0.5em 0" }} />
+      <CopyButton text={nsec()} style={{ margin: "0.5em 0" }} link={false} />
       <CopyButton text={nsecNpub()} style={{ margin: "0.5em 0" }} />
       <CopyButton text={nsecNprofile()} style={{ margin: "0.5em 0" }} />
       <hr style={{ margin: "0.5em 0" }} />
