@@ -2,7 +2,7 @@
   "name": "nake",
   "description": "Nostr Army Knife webExtension",
   "private": true,
-  "version": "0.1.8",
+  "version": "0.1.9",
   "type": "module",
   "scripts": {
     "dev": "wxt",

@@ -70,13 +70,15 @@ export default function CopyButton({
       }, 2000);
     });
   };
-  const href = createMemo(() => {
+  const href = createMemo((): string => {
     if (text) {
       if (typeof text === "string") {
         return text;
       } else {
         return text();
       }
+    } else {
+      return "";
     }
   });
 
@@ -104,10 +106,10 @@ export default function CopyButton({
           <>{copiedIcon}</>
         </Show>
       </Button>
-      <Show when={link === true}>
+      <Show when={link === true && text}>
         <Link
           title={"open in njump"}
-          href={`https://njump.me/${href}`}
+          href={`https://njump.me/${href()}`}
           class={className + " nakeLinkButton"}
           style={{
             height: "fit-content",
