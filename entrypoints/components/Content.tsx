@@ -5,9 +5,11 @@ import { Accessor, Show } from "solid-js";
 export default function Content({
   content,
   title,
+  link = true,
 }: {
   content: Accessor<string> | string;
   title?: string;
+  link?: boolean;
 }) {
   return (
     <div class={className} style={{ margin: "6px 0" }}>
@@ -19,7 +21,7 @@ export default function Content({
           [{title}]
         </span>
       </Show>
-      <CopyButton text={content} />
+      <CopyButton text={content} link={link} />
     </div>
   );
 }
