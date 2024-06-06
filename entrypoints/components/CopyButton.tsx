@@ -84,9 +84,9 @@ export default function CopyButton({
         class="nakeCopyButton"
         style={{
           "margin-left": "4px",
-          padding: "0 2px ",
+          padding: "2px ",
           "border-radius": "100%",
-
+          display: "inline-flex",
           "vertical-align": "middle",
         }}
       >
@@ -98,7 +98,7 @@ export default function CopyButton({
         <Link
           title={"open in njump"}
           href={`https://njump.me/${typeof text === "string" ? text : text()}`}
-          class="nakeLinkButton"
+          class={className + " nakeLinkButton"}
           style={{
             height: "fit-content",
             width: "fit-content",
