@@ -231,6 +231,7 @@ export default function MenuComponent(props: {
                 width="24"
                 height="24"
                 viewBox="0 0 256 256"
+                style={{ "background-color": " #ccc" }}
               >
                 <path
                   fill="#888"
@@ -254,7 +255,7 @@ export default function MenuComponent(props: {
                   "flex-direction": "row",
                   "border-bottom": " 1px solid #ddd",
                   "justify-content": "space-between",
-                  "background-color": "#eee",
+                  "background-color": "#eee ",
                 }}
               >
                 <div
@@ -265,6 +266,7 @@ export default function MenuComponent(props: {
                     gap: "4px",
                     width: "100%",
                     height: "24px",
+                    "background-color": "#eee ",
                   }}
                 >
                   <img
@@ -273,6 +275,7 @@ export default function MenuComponent(props: {
                     class={props.className}
                     src={Icon}
                     alt="Translate"
+                    style={{ "background-color": "#eee " }}
                   />
                   NAKE
                 </div>

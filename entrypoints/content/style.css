@@ -9,6 +9,7 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
   color: black;
+  background-color: white;
 }
 .nake button {
   border: none;
