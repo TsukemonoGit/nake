@@ -263,6 +263,8 @@ export default function MenuComponent(props: {
                     display: "flex",
                     "flex-direction": "row",
                     gap: "4px",
+                    width: "100%",
+                    height: "24px",
                   }}
                 >
                   <img

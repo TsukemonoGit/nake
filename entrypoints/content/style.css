@@ -8,9 +8,14 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+  color: black !important;
 }
 .nake button {
   border: none;
+  margin: 0;
+  display: normal;
+  width: fit-content;
+  font-size: 16px;
 }
 .nakeRelay {
   border-radius: 8px;
