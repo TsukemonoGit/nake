@@ -148,16 +148,8 @@ export default function MenuComponent(props: {
         id="nake-main"
         class={props.className}
         style={{
-          position: "absolute",
           top: `${props.position.top}px`,
           left: `${props.position.left}px`,
-          background: "white",
-          border: "1px solid #ccc",
-          width: "max-content",
-          height: "max-content",
-          "z-index": "9999",
-          "border-radius": "100%",
-          "box-shadow": "2px 2px 10px 0px rgba(0, 0, 0, 0.35)",
         }}
       >
         <Show when={props.settings().showIconOnTextSelect}>
@@ -168,15 +160,7 @@ export default function MenuComponent(props: {
             id="selectionMenu"
             class={props.className}
             type="button"
-            style={{
-              padding: "4px",
-              display: "flex",
-              width: "32px",
-              height: "32px",
-              "justify-content": "center",
-              "vertical-align": "middle",
-              "background-color": "rgba(0, 0, 0,0)",
-            }}
+            style={{}}
             onClick={handleClickIcon}
           >
             <img
@@ -193,35 +177,16 @@ export default function MenuComponent(props: {
             ref={(el) => {
               overflowCheck = el;
             }}
-            class={props.className}
+            class={`${props.className} `}
+            id="popupWindow"
             style={{
-              position: "fixed",
               top: `${pos().top}px`,
               left: `${pos().left}px`,
-              width: "350px",
-              "overflow-x": "auto",
-              background: "white",
-              border: "1px solid #ccc",
-
-              "word-break": "break-all",
-              "box-shadow": "2px 2px 10px 0px rgba(0, 0, 0, 0.35)",
-              display: "grid",
-              "grid-template-columns": "auto 1fr",
-
-              "border-radius": "0.5em",
             }}
           >
             <div
               class={`${className}`}
-              style={{
-                cursor: "move",
-                "background-color": "#ccc",
-                display: "flex",
-                "justify-content": "center",
-                "vertical-align": "middle",
-                "align-items": "center",
-                "border-right": " 1px solid #bbb",
-              }}
+              id="nake-sidebar"
               onMouseDown={handleMouseDown}
               onTouchStart={handleTouchStart}
             >
@@ -231,7 +196,6 @@ export default function MenuComponent(props: {
                 width="24"
                 height="24"
                 viewBox="0 0 256 256"
-                style={{ "background-color": " #ccc" }}
               >
                 <path
                   fill="#888"
@@ -239,57 +203,21 @@ export default function MenuComponent(props: {
                 />
               </svg>
             </div>
-            <div
-              class={`${className}`}
-              style={{
-                display: "flex",
-                "flex-direction": "column",
-              }}
-            >
-              <div
-                class={`${className}`}
-                style={{
-                  padding: "4px 8px 1px  8px",
-
-                  display: "flex",
-                  "flex-direction": "row",
-                  "border-bottom": " 1px solid #ddd",
-                  "justify-content": "space-between",
-                  "background-color": "#eee ",
-                }}
-              >
-                <div
-                  class={`${className}`}
-                  style={{
-                    display: "flex",
-                    "flex-direction": "row",
-                    gap: "4px",
-                    width: "100%",
-                    height: "24px",
-                    "background-color": "#eee ",
-                  }}
-                >
+            <div class={`${className}`} id={"nake-topbar"}>
+              <div id={"nake-topbar1"} class={`${className}`}>
+                <div id={"nake-topbar2"} class={`${className}`}>
                   <img
                     width={24}
                     height={24}
                     class={props.className}
                     src={Icon}
                     alt="Translate"
-                    style={{ "background-color": "#eee " }}
                   />
                   NAKE
                 </div>
-                <button
-                  id="nakeBatuButton"
-                  style={{
-                    padding: "0",
-                    "align-self": "end",
-                  }}
-                >
-                  ❌️
-                </button>
+                <button id="nakeBatuButton">❌️</button>
               </div>
-              <div class={className} style={{ padding: "6px" }}>
+              <div id="nake-content" class={className}>
                 {nakeContent()}
               </div>
             </div>
