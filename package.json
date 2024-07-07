@@ -2,7 +2,7 @@
   "name": "nake",
   "description": "Nostr Army Knife webExtension",
   "private": true,
-  "version": "0.1.12",
+  "version": "0.1.13",
   "type": "module",
   "scripts": {
     "dev": "wxt",
@@ -15,12 +15,12 @@
     "postinstall": "wxt prepare"
   },
   "dependencies": {
-    "nostr-tools": "^2.6.0",
-    "solid-js": "^1.8.7"
+    "nostr-tools": "^2.7.0",
+    "solid-js": "^1.8.18"
   },
   "devDependencies": {
-    "typescript": "^5.3.3",
-    "vite-plugin-solid": "^2.8.0",
-    "wxt": "^0.18.0"
+    "typescript": "^5.5.3",
+    "vite-plugin-solid": "^2.10.2",
+    "wxt": "^0.18.12"
   }
 }
