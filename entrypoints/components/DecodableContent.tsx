@@ -123,11 +123,11 @@ export default function DecodableContent({ content }: { content: string }) {
               <Content content={nprofile} title={"nprofile"} />
             </>
           </Match>
-          <Match when={decoded()?.type === "nrelay"}>
+          {/* <Match when={decoded()?.type === "nrelay"}>
             <>
               <CopyButton text={decoded()?.data as string} />
             </>
-          </Match>
+          </Match> */}
           <Match when={decoded()?.type === "nevent"}>
             <>
               <Content

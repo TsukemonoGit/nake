@@ -12,7 +12,6 @@ import DecodableContent from "../components/DecodableContent";
 import HexContent from "../components/HexContent";
 import { hexRegex, encodableRegex } from "@/util";
 import Nip33AtagContent from "../components/Nip33AtagContent";
-import RelayContent from "../components/RelayContent";
 
 export default function MenuComponent(props: {
   position: { top: number; left: number };
@@ -74,8 +73,9 @@ export default function MenuComponent(props: {
       return <DecodableContent content={props.content} />;
     } else if (nip33Regex.test(props.content)) {
       return <Nip33AtagContent content={props.content} />;
-    } else if (relayRegex.test(props.content)) {
-      return <RelayContent content={props.content} />;
+      //}
+      //else if (relayRegex.test(props.content)) {
+      //  return <RelayContent content={props.content} />;
     } else {
       return <div>Invalid content</div>;
     }
