@@ -7,8 +7,6 @@ import {
   createMemo,
   createSignal,
 } from "solid-js";
-import CopyButton from "./CopyButton";
-import { bytesToHex, hexToBytes } from "@noble/hashes/utils";
 import { className } from "@/util";
 import Content from "./Content";
 import {
@@ -17,6 +15,7 @@ import {
   AddressPointer,
 } from "nostr-tools/nip19";
 import RelayHints from "./RelayHints";
+import EncodedNsec from "./EncodedNsec";
 
 export default function DecodableContent({ content }: { content: string }) {
   const decoded: Accessor<nip19.DecodeResult | null> = createMemo(() => {
@@ -74,6 +73,7 @@ export default function DecodableContent({ content }: { content: string }) {
       return "";
     }
   });
+
   return (
     <>
       <Show when={decoded() !== null} fallback={"failed to decode"}>
@@ -204,18 +204,7 @@ export default function DecodableContent({ content }: { content: string }) {
             </>
           </Match>
           <Match when={decoded()?.type === "nsec"}>
-            <>
-              <Content
-                content={(decoded()?.data as Uint8Array).toString()}
-                title={"Uint8Array"}
-                link={false}
-              />
-              <Content
-                content={bytesToHex(decoded()?.data as Uint8Array)}
-                title={"hex"}
-                link={false}
-              />
-            </>
+            <EncodedNsec array={decoded()?.data as Uint8Array} />
           </Match>
           <Match when={decoded()?.type === "npub"}>
             <>

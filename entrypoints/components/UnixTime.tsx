@@ -9,7 +9,7 @@ export default function UnixTime({ content }: { content: string }) {
       <span class={className} style={{ color: "gray", "font-size": "small" }}>
         local time
       </span>
-      <CopyButton text={localTime} style={{ margin: "0.5em 0" }} />
+      <CopyButton text={localTime} style={{ margin: "0.5em 0" }} link={false} />
     </div>
   );
 }

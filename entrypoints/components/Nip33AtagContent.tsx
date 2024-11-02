@@ -1,7 +1,6 @@
 import { className, nip33Regex } from "@/util";
 import { nip19 } from "nostr-tools";
-import { Accessor, Show, createMemo, createSignal } from "solid-js";
-import CopyButton from "./CopyButton";
+import { Accessor, createMemo, createSignal } from "solid-js";
 import Content from "./Content";
 import RelayHints from "./RelayHints";
 

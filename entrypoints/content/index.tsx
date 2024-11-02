@@ -9,6 +9,7 @@ import {
   relayRegex,
   defaultSettings,
   loadSettings,
+  nip49Regex,
 } from "../../util";
 import "./style.css";
 
@@ -167,7 +168,8 @@ export default defineContentScript({
         encodableRegex.test(text) ||
         hexRegex.test(text) ||
         nip33Regex.test(text) ||
-        relayRegex.test(text)
+        nip49Regex.test(text)
+        // || relayRegex.test(text)
       );
     }
 
