@@ -8,9 +8,33 @@ Nostr Army Knife webExtension
 
 - link to njump me
 
+- Enter the Unix timestamp in seconds in the pop-up and it converts to local time.
+
+
+
 [Chrome Web Store](https://chromewebstore.google.com/detail/nake/pckmdjknadbfalfohabbccmffoohlamk)
 
 [Firefox Addon Store](https://addons.mozilla.org/ja/firefox/addon/nake/)
+
+
+
+## 使い方
+
+release の zip をブラウザの拡張機能ページのパッケージ化されていない拡張機能を読み込むで読み込む
+
+スマホでも使えるやつでは使える
+
+スマホでは範囲選択（文字長押し）したあともう一回適当にクリックしたらアイコンが出てくると思います
+
+#### popupsample
+
+![popupsample](popupsample640x400.png)
+
+#### contentsample
+
+![contentsample](contentsample640x400.png)
+
+
 
 ## license
 
@@ -43,19 +67,3 @@ Nostr Army Knife webExtension
   Apache License Version 2.0, January 2004
 
   (https://github.com/google/material-design-icons/blob/master/LICENSE)
-
-## 使い方
-
-release の zip をブラウザの拡張機能ページのパッケージ化されていない拡張機能を読み込むで読み込む
-
-スマホでも使えるやつでは使える
-
-スマホでは範囲選択（文字長押し）したあともう一回適当にクリックしたらアイコンが出てくると思います
-
-#### popupsample
-
-![popupsample](popupsample640x400.png)
-
-#### contentsample
-
-![contentsample](contentsample640x400.png)
