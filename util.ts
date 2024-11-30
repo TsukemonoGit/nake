@@ -2,6 +2,7 @@ import { nip19 } from "nostr-tools";
 import { bytesToHex, hexToBytes } from "@noble/hashes/utils";
 import { decrypt, encrypt } from "nostr-tools/nip49";
 
+export const unixtimeRegex = /^\d{10}$/;
 export const hexRegex = /^[0-9a-fA-F]{64}$/;
 export const className = "nake";
 export const encodableRegex =
@@ -14,9 +15,11 @@ export const nip49Regex = /^ncryptsec1[023456789acdefghjklmnpqrstuvwxyz]{58,}$/;
 
 export interface Settings {
   showIconOnTextSelect: boolean;
+  // showLocalTimeNumberSelect: boolean;
 }
 export const defaultSettings: Settings = {
   showIconOnTextSelect: true,
+  //showLocalTimeNumberSelect: true,
   // 他の設定項目をここに追加
   //   darkMode: false, // 新しい設定項目
 };

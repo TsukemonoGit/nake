@@ -10,6 +10,7 @@ import {
   defaultSettings,
   loadSettings,
   nip49Regex,
+  unixtimeRegex,
 } from "../../util";
 import "./style.css";
 
@@ -168,9 +169,13 @@ export default defineContentScript({
         encodableRegex.test(text) ||
         hexRegex.test(text) ||
         nip33Regex.test(text) ||
-        nip49Regex.test(text)
+        nip49Regex.test(text) ||
         // || relayRegex.test(text)
+        unixtimeRegex.test(text)
       );
+
+      // || relayRegex.test(text)
+      // unixtimeRegex.test(text));
     }
 
     function closeMenu() {

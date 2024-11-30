@@ -29,6 +29,17 @@ export default function App() {
     setSettings(newSettings);
     saveSettings(newSettings);
   };
+
+  const handleLocalTimeCheckboxChange = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    //  console.log(target.checked);
+    const newSettings = {
+      ...settings(),
+      showLocalTimeNumberSelect: target.checked,
+    };
+    setSettings(newSettings);
+    saveSettings(newSettings);
+  };
   // const handleDarkModeChange = (event: Event) => {
   //   const target = event.target as HTMLInputElement;
   //   const newSettings = {
@@ -62,6 +73,7 @@ export default function App() {
         />
         <span class="checkmark"></span>
       </label>
+
       {/* <label class="custom-checkbox-container">
         ダークモード
         <input

@@ -7,6 +7,7 @@ import {
   nip33Regex,
   nip49Regex,
   relayRegex,
+  unixtimeRegex,
 } from "@/util";
 import HexContent from "../components/HexContent";
 import DecodableContent from "../components/DecodableContent";

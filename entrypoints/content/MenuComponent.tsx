@@ -7,12 +7,19 @@ import {
   createEffect,
   Accessor,
 } from "solid-js";
-import { Settings, className, nip33Regex, nip49Regex } from "@/util";
+import {
+  Settings,
+  className,
+  nip33Regex,
+  nip49Regex,
+  unixtimeRegex,
+} from "@/util";
 import DecodableContent from "../components/DecodableContent";
 import HexContent from "../components/HexContent";
 import { hexRegex, encodableRegex } from "@/util";
 import Nip33AtagContent from "../components/Nip33AtagContent";
 import Nip49Content from "../components/Nip49Content";
+import UnixTime from "../components/UnixTime";
 
 export default function MenuComponent(props: {
   position: { top: number; left: number };
@@ -68,7 +75,9 @@ export default function MenuComponent(props: {
   });
 
   const nakeContent = createMemo(() => {
-    if (hexRegex.test(props.content)) {
+    if (unixtimeRegex.test(props.content)) {
+      return <UnixTime content={props.content} />;
+    } else if (hexRegex.test(props.content)) {
       return <HexContent content={props.content} />;
     } else if (encodableRegex.test(props.content)) {
       return <DecodableContent content={props.content} />;
