@@ -38,10 +38,11 @@ export default defineContentScript({
       newPort.postMessage("ping");
       newPort.onMessage.addListener((message) => {
         //backgroundからのメッセージを受け取る
-        if (typeof message === "object") {
+
+        if (message && typeof message === "object") {
           if (message.hasOwnProperty("settings")) {
             setSettings(message.settings);
-          } else if (message.hasOwnProperty("isOpen")) {
+          } else if (message && message.hasOwnProperty("isOpen")) {
             setIsOpen(message.isOpen);
           }
         }
