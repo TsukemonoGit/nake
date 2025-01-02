@@ -1,5 +1,5 @@
 //background.ts
-import { Settings } from "@/util";
+import { Settings } from "@/utils/util";
 import { Menus, Runtime, browser } from "wxt/browser";
 
 export default defineBackground(() => {

@@ -1,4 +1,4 @@
-import { className } from "@/util";
+import { className } from "@/utils/util";
 import { JSX } from "solid-js";
 
 interface ButtonProps extends JSX.HTMLAttributes<HTMLButtonElement> {

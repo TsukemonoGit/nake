@@ -1,4 +1,4 @@
-import { className, relayRegex } from "@/util";
+import { className, relayRegex } from "@/utils/util";
 import {
   Accessor,
   For,

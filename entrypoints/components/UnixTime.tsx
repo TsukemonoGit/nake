@@ -1,5 +1,5 @@
 import { createMemo } from "solid-js";
-import { className } from "../../util";
+import { className } from "../../utils/util";
 
 import CopyButton from "./CopyButton";
 export default function UnixTime({ content }: { content: string }) {

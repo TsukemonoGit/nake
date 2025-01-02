@@ -13,10 +13,10 @@ import {
   nip33Regex,
   nip49Regex,
   unixtimeRegex,
-} from "@/util";
+} from "@/utils/util";
 import DecodableContent from "../components/DecodableContent";
 import HexContent from "../components/HexContent";
-import { hexRegex, encodableRegex } from "@/util";
+import { hexRegex, encodableRegex } from "@/utils/util";
 import Nip33AtagContent from "../components/Nip33AtagContent";
 import Nip49Content from "../components/Nip49Content";
 import UnixTime from "../components/UnixTime";
@@ -75,6 +75,9 @@ export default function MenuComponent(props: {
   });
 
   const nakeContent = createMemo(() => {
+    if (!props.content || props.content === "") {
+      return <></>;
+    }
     if (unixtimeRegex.test(props.content)) {
       return <UnixTime content={props.content} />;
     } else if (hexRegex.test(props.content)) {

@@ -1,4 +1,4 @@
-import { nsecToNpub, toNcryptsec } from "@/util";
+import { nsecToNpub, toNcryptsec } from "@/utils/util";
 import Content from "./Content";
 import { bytesToHex } from "@noble/hashes/utils";
 import { createSignal, Show } from "solid-js";

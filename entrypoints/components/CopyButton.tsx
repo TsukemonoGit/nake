@@ -1,6 +1,6 @@
 import { Accessor, Show, createMemo, createSignal } from "solid-js";
 import Button from "./Button";
-import { className } from "@/util";
+import { className } from "@/utils/util";
 import Link from "./Link";
 
 interface CopyButtonProps {

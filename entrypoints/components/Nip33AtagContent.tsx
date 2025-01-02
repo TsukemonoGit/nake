@@ -1,4 +1,4 @@
-import { className, nip33Regex } from "@/util";
+import { className, nip33Regex } from "@/utils/util";
 import { nip19 } from "nostr-tools";
 import { Accessor, createMemo, createSignal } from "solid-js";
 import Content from "./Content";

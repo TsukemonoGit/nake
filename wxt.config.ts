@@ -12,5 +12,8 @@ export default defineConfig({
   manifest: {
     permissions: ["storage", "contextMenus"],
     default_locale: "en",
+    content_security_policy: {
+      extension_pages: "script-src 'self'; object-src 'self';",
+    },
   },
 });

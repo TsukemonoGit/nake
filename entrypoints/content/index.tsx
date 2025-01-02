@@ -11,7 +11,7 @@ import {
   loadSettings,
   nip49Regex,
   unixtimeRegex,
-} from "../../util";
+} from "../../utils/util";
 import "./style.css";
 
 export default defineContentScript({

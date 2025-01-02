@@ -7,7 +7,7 @@ import {
   createMemo,
   createSignal,
 } from "solid-js";
-import { className } from "@/util";
+import { className } from "@/utils/util";
 import Content from "./Content";
 import {
   ProfilePointer,

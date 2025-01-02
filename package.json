@@ -2,7 +2,7 @@
   "name": "nake",
   "description": "Nostr Army Knife webExtension",
   "private": true,
-  "version": "0.1.16",
+  "version": "0.1.17",
   "type": "module",
   "scripts": {
     "dev": "wxt",
@@ -21,6 +21,6 @@
   "devDependencies": {
     "typescript": "^5.7.2",
     "vite-plugin-solid": "^2.11.0",
-    "wxt": "^0.19.17"
+    "wxt": "^0.19.23"
   }
 }

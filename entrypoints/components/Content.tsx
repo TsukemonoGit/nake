@@ -1,4 +1,4 @@
-import { className } from "@/util";
+import { className } from "@/utils/util";
 import CopyButton from "./CopyButton";
 import { Accessor, Show } from "solid-js";
 

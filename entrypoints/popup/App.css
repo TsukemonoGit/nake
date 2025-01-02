@@ -7,3 +7,12 @@ h2 {
   margin: 0;
   padding: 0;
 }
+
+.icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 100%;
+}

@@ -1,6 +1,6 @@
 import { getPublicKey, nip19 } from "nostr-tools";
 import { createMemo } from "solid-js";
-import { className } from "../../util";
+import { className } from "../../utils/util";
 import { bytesToHex, hexToBytes } from "@noble/hashes/utils";
 import CopyButton from "./CopyButton";
 export default function HecContent({ content }: { content: string }) {
