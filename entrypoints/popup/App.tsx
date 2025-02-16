@@ -13,7 +13,7 @@ import DecodableContent from "../components/DecodableContent";
 import Nip33AtagContent from "../components/Nip33AtagContent";
 import UnixTime from "../components/UnixTime";
 import Nip49Content from "../components/Nip49Content";
-
+import "@konemono/nostr-share-component"
 
 function App() {
   const [selectedText, setSelectedText] = createSignal("");
