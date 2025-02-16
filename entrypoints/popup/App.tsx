@@ -6,15 +6,14 @@ import {
   hexRegex,
   nip33Regex,
   nip49Regex,
-  relayRegex,
-  unixtimeRegex,
+
 } from "@/utils/util";
 import HexContent from "../components/HexContent";
 import DecodableContent from "../components/DecodableContent";
 import Nip33AtagContent from "../components/Nip33AtagContent";
 import UnixTime from "../components/UnixTime";
 import Nip49Content from "../components/Nip49Content";
-import Button from "../components/Button";
+
 
 function App() {
   const [selectedText, setSelectedText] = createSignal("");
@@ -63,7 +62,7 @@ function App() {
         />
         NAKE
         <div style="margin-left: auto; display: flex; align-items: center">
-          <button onClick={onClickSettings} class="icon">
+          <button onClick={onClickSettings} class="icon" title="settings">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width={24}
@@ -76,7 +75,7 @@ function App() {
               />
             </svg>
           </button>
-          <button onClick={onClickHome} class="icon">
+          <button title="home" onClick={onClickHome} class="icon">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -91,12 +90,14 @@ function App() {
           </button>
 
           <div style={{ height: "32px", "margin-top": "auto" }}>
+            {/*@ts-ignore */}
             <nostr-share
               data-url="https://tsukemonogit.github.io/nake-website/"
               data-text="NAKE (Nostr Army Knife Extension)"
               data-type="icon"
               icon-size="24"
-            ></nostr-share>
+            >{/*@ts-ignore */}
+            </nostr-share>
           </div>
         </div>
       </h2>

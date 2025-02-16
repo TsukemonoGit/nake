@@ -14,6 +14,12 @@ import {
 } from "../../utils/util";
 import "./style.css";
 
+
+interface Message {
+  settings?: Settings;
+  isOpen?: boolean;
+}
+
 export default defineContentScript({
   matches: ["<all_urls>"],
   async main(ctx: any) {
@@ -36,14 +42,14 @@ export default defineContentScript({
       const newPort = browser.runtime.connect({ name: "content" });
 
       newPort.postMessage("ping");
-      newPort.onMessage.addListener((message) => {
+      newPort.onMessage.addListener((message: unknown) => {
+        const typedMessage = message as Message;
         //backgroundからのメッセージを受け取る
-
-        if (message && typeof message === "object") {
-          if (message.hasOwnProperty("settings")) {
-            setSettings(message.settings);
-          } else if (message && message.hasOwnProperty("isOpen")) {
-            setIsOpen(message.isOpen);
+        if (typedMessage && typeof typedMessage === "object") {
+          if (typedMessage.settings) {
+            setSettings(typedMessage.settings);
+          } else if (typedMessage.isOpen !== undefined) {
+            setIsOpen(typedMessage.isOpen);
           }
         }
       });
