@@ -51,7 +51,7 @@ function App() {
     });
   };
   return (
-    <div>
+    <div style={{ "min-height": "12em" }}>
       <h2 style={{ display: "flex", "align-items": "center" }}>
         <img
           width={20}
@@ -89,11 +89,11 @@ function App() {
             </svg>
           </button>
 
-          <div style={{ height: "32px", "margin-top": "auto" }}>
+          <div style={{ height: "32px", display: "flex", "align-items": "center" }}>
             {/*@ts-ignore */}
             <nostr-share
-              data-url="https://tsukemonogit.github.io/nake-website/"
-              data-text="NAKE (Nostr Army Knife Extension)"
+              data-text="NAKE (Nostr Army Knife Extension)
+https://tsukemonogit.github.io/nake-website/"
               data-type="icon"
               icon-size="24"
             >{/*@ts-ignore */}
