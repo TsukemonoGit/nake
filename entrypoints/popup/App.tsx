@@ -89,7 +89,7 @@ function App() {
             </svg>
           </button>
 
-          <div style={{ height: "32px", "margin-top": "auto" }}>
+          <div style={{ height: "32px", display: "flex", "align-items": "center" }}>
             {/*@ts-ignore */}
             <nostr-share
               data-text="NAKE (Nostr Army Knife Extension)
