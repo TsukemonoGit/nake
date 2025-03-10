@@ -1,4 +1,4 @@
-import { nip19 } from "nostr-tools";
+import { getPublicKey, nip19 } from "nostr-tools";
 import { bytesToHex, hexToBytes } from "@noble/hashes/utils";
 import { decrypt, encrypt } from "nostr-tools/nip49";
 
@@ -34,8 +34,7 @@ export const nsecToNpub = (data: Uint8Array | undefined): string => {
     return "";
   }
   try {
-    const hex = bytesToHex(data);
-    return nip19.npubEncode(hex);
+    return nip19.npubEncode(getPublicKey(data));
   } catch (error) {
     return "";
   }
