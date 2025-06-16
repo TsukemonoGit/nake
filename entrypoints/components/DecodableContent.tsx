@@ -46,20 +46,29 @@ export default function DecodableContent({ content }: { content: string }) {
       return "";
     }
   });
+
   const nevent = createMemo(() => {
     if (decoded()?.type === "nevent" || decoded()?.type === "note") {
       const id =
         decoded()?.type === "nevent"
           ? (decoded()?.data as nip19.EventPointer).id
           : (decoded()?.data as string);
+
+      // neventの場合は元のkindとauthorも取得
+      const originalData = decoded()?.data as nip19.EventPointer;
+
       return nip19.neventEncode({
         id: id,
         relays: relayHints(),
+        // kindとauthorが存在する場合は含める
+        ...(originalData?.kind !== undefined && { kind: originalData.kind }),
+        ...(originalData?.author && { author: originalData.author }),
       });
     } else {
       return "";
     }
   });
+
   const naddr = createMemo(() => {
     if (decoded()?.type === "naddr") {
       const addr = decoded()?.data as nip19.AddressPointer;
@@ -95,23 +104,6 @@ export default function DecodableContent({ content }: { content: string }) {
                 setRelayHints={setRelayHints}
                 relayHints={relayHints}
               />
-              {/* <Show when={(decoded()?.data as nip19.ProfilePointer)?.relays}>
-                <div class={className} style={{ margin: "6px 0" }}>
-                  <span
-                    class={className}
-                    style={{ "font-weight": "bold", "font-size": "smaller" }}
-                  >
-                    [relays]
-                  </span>
-                  <CopyButton
-                    text={
-                      (decoded()?.data as nip19.ProfilePointer)?.relays?.join(
-                        ", "
-                      ) || "no data"
-                    }
-                  />
-                </div>
-              </Show> */}
               <hr />
 
               <Content
@@ -123,11 +115,7 @@ export default function DecodableContent({ content }: { content: string }) {
               <Content content={nprofile} title={"nprofile"} />
             </>
           </Match>
-          {/* <Match when={decoded()?.type === "nrelay"}>
-            <>
-              <CopyButton text={decoded()?.data as string} />
-            </>
-          </Match> */}
+
           <Match when={decoded()?.type === "nevent"}>
             <>
               <Content
@@ -140,13 +128,18 @@ export default function DecodableContent({ content }: { content: string }) {
                 setRelayHints={setRelayHints}
                 relayHints={relayHints}
               />
-              <Show when={(decoded()?.data as nip19.EventPointer).kind}>
+              <Show
+                when={
+                  (decoded()?.data as nip19.EventPointer).kind !== undefined
+                }
+              >
                 <Content
                   content={
                     (decoded()?.data as nip19.EventPointer)?.kind?.toString() ??
                     ""
                   }
                   title={"kind"}
+                  link={false}
                 />
               </Show>
               <Show when={(decoded()?.data as nip19.EventPointer).author}>
@@ -155,6 +148,7 @@ export default function DecodableContent({ content }: { content: string }) {
                     (decoded()?.data as nip19.EventPointer)?.author ?? ""
                   }
                   title={"author"}
+                  link={false}
                 />
               </Show>
               <hr />
@@ -162,10 +156,12 @@ export default function DecodableContent({ content }: { content: string }) {
                 content={nip19.noteEncode(
                   (decoded()?.data as nip19.EventPointer).id
                 )}
+                title={"note"}
               />
-              <Content content={nevent} />
+              <Content content={nevent} title={"nevent"} />
             </>
           </Match>
+
           <Match when={decoded()?.type === "naddr"}>
             <>
               <Content
@@ -203,9 +199,11 @@ export default function DecodableContent({ content }: { content: string }) {
               <Content content={naddr} title={"naddr"} />
             </>
           </Match>
+
           <Match when={decoded()?.type === "nsec"}>
             <EncodedNsec array={decoded()?.data as Uint8Array} />
           </Match>
+
           <Match when={decoded()?.type === "npub"}>
             <>
               <Content
@@ -221,6 +219,7 @@ export default function DecodableContent({ content }: { content: string }) {
               <Content content={nprofile} title={"nprofile"} />
             </>
           </Match>
+
           <Match when={decoded()?.type === "note"}>
             <>
               <Content
