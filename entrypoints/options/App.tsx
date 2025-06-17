@@ -2,7 +2,7 @@ import { createSignal, onCleanup, onMount } from "solid-js";
 
 import "./App.css";
 import { Settings, defaultSettings, loadSettings } from "@/utils/util";
-import { storage } from "wxt/storage";
+import { storage } from "@wxt-dev/storage";
 export default function App() {
   // 設定の初期値を読み込む
   const [settings, setSettings] = createSignal<Settings>(defaultSettings);

@@ -1,7 +1,7 @@
 import { getPublicKey, nip19 } from "nostr-tools";
-import { bytesToHex, hexToBytes } from "@noble/hashes/utils";
+//import { bytesToHex, hexToBytes } from "@noble/hashes/utils";
 import { decrypt, encrypt } from "nostr-tools/nip49";
-
+import { storage } from "@wxt-dev/storage";
 export const unixtimeRegex = /^\d{10}$/;
 export const hexRegex = /^[0-9a-fA-F]{64}$/;
 export const className = "nake";

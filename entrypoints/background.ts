@@ -1,6 +1,6 @@
 //background.ts
 import { Settings } from "@/utils/util";
-import { Menus, Runtime, browser } from "wxt/browser";
+import { browser } from "wxt/browser";
 
 export default defineBackground(() => {
   initializeContextMenu();
@@ -28,7 +28,11 @@ let isContentConnected = false;
  * ポート接続時の処理を行う関数
  * @param port - 接続されたポートオブジェクト
  */
-function handlePortConnection(port: Runtime.Port): void {
+function handlePortConnection(port: {
+  name: string;
+  onMessage: { addListener: (arg0: (message: any) => void) => void };
+  onDisconnect: { addListener: (arg0: () => void) => void };
+}): void {
   if (port.name === "content") {
     isContentConnected = true;
     port.onMessage.addListener((message) =>
@@ -45,7 +49,12 @@ function handlePortConnection(port: Runtime.Port): void {
   }
 }
 
-function storageWatch(port: Runtime.Port) {
+function storageWatch(port: {
+  name?: string;
+  onMessage?: { addListener: (arg0: (message: any) => void) => void };
+  onDisconnect?: { addListener: (arg0: () => void) => void };
+  postMessage?: any;
+}) {
   const unwatch = storage.watch<Settings>(
     "local:appSettings",
     (newSettings, oldSettings) => {
@@ -69,7 +78,11 @@ function storageWatch(port: Runtime.Port) {
  */
 function handleMessageFromContentScript(
   message: any,
-  port: Runtime.Port
+  port: {
+    name: string;
+    onMessage: { addListener: (arg0: (message: any) => void) => void };
+    onDisconnect: { addListener: (arg0: () => void) => void };
+  }
 ): void {
   if (typeof message === "object" && message.hasOwnProperty("visible")) {
     browser.contextMenus.update("openNake", { visible: message.visible });
@@ -82,8 +95,13 @@ function handleMessageFromContentScript(
  * @param port - 接続されたポートオブジェクト
  */
 function handleContextMenuClick(
-  info: Menus.OnClickData,
-  port: Runtime.Port
+  info: globalThis.Browser.contextMenus.OnClickData,
+  port: {
+    name?: string;
+    onMessage?: { addListener: (arg0: (message: any) => void) => void };
+    onDisconnect?: { addListener: (arg0: () => void) => void };
+    postMessage?: any;
+  }
 ): void {
   if (info.menuItemId === "openNake" && isContentConnected) {
     try {
