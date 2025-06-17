@@ -31,6 +31,58 @@ export default function DecodableContent({ content }: { content: string }) {
       ?.relays ?? []
   );
 
+  // nevent用のkindとauthorの編集可能state
+  const [eventKind, setEventKind] = createSignal<number | undefined>(
+    decoded()?.type === "nevent" || decoded()?.type === "note"
+      ? (decoded()?.data as EventPointer)?.kind
+      : undefined
+  );
+  const [eventAuthor, setEventAuthor] = createSignal<string>(
+    decoded()?.type === "nevent" || decoded()?.type === "note"
+      ? (decoded()?.data as EventPointer)?.author ?? ""
+      : ""
+  );
+
+  // authorをnpub形式で表示するための変換関数
+  const authorAsNpub = createMemo(() => {
+    const author = eventAuthor();
+    if (!author) return "";
+    try {
+      return nip19.npubEncode(author);
+    } catch {
+      return author; // 変換に失敗した場合は元の値を返す
+    }
+  });
+
+  // npub入力をhexに変換する関数
+  const handleAuthorInput = (value: string) => {
+    if (!value) {
+      setEventAuthor("");
+      return;
+    }
+
+    try {
+      // npubの場合はhexに変換
+      if (value.startsWith("npub")) {
+        const decoded = nip19.decode(value);
+        if (decoded.type === "npub") {
+          setEventAuthor(decoded.data as string);
+        }
+      } else {
+        // hex形式の場合はそのまま使用（64文字の16進数かチェック）
+        if (/^[0-9a-fA-F]{64}$/.test(value)) {
+          setEventAuthor(value);
+        } else {
+          // 不正な形式の場合は現在の値を保持
+          return;
+        }
+      }
+    } catch {
+      // デコードに失敗した場合は何もしない
+      return;
+    }
+  };
+
   const nprofile = createMemo(() => {
     if (decoded()?.type === "nprofile" || decoded()?.type === "npub") {
       const pubkey =
@@ -54,15 +106,12 @@ export default function DecodableContent({ content }: { content: string }) {
           ? (decoded()?.data as nip19.EventPointer).id
           : (decoded()?.data as string);
 
-      // neventの場合は元のkindとauthorも取得
-      const originalData = decoded()?.data as nip19.EventPointer;
-
       return nip19.neventEncode({
         id: id,
         relays: relayHints(),
-        // kindとauthorが存在する場合は含める
-        ...(originalData?.kind !== undefined && { kind: originalData.kind }),
-        ...(originalData?.author && { author: originalData.author }),
+        // 編集可能なkindとauthorを使用
+        ...(eventKind() !== undefined && { kind: eventKind()! }),
+        ...(eventAuthor() && { author: eventAuthor() }),
       });
     } else {
       return "";
@@ -104,6 +153,49 @@ export default function DecodableContent({ content }: { content: string }) {
                 setRelayHints={setRelayHints}
                 relayHints={relayHints}
               />
+
+              {/* 編集可能なkind (noteの場合は追加) */}
+              <div class={className} style={{ margin: "6px 0" }}>
+                <span
+                  class={className}
+                  style={{ "font-weight": "bold", "font-size": "smaller" }}
+                >
+                  kind:
+                </span>
+                <input
+                  type="number"
+                  value={eventKind() ?? ""}
+                  onInput={(e) => {
+                    const value = e.currentTarget.value;
+                    setEventKind(value === "" ? undefined : parseInt(value));
+                  }}
+                  placeholder="kind (optional)"
+                  style={{ margin: "0 6px", padding: "2px 4px", width: "80px" }}
+                />
+              </div>
+
+              {/* 編集可能なauthor (npub表記) */}
+              <div class={className} style={{ margin: "6px 0" }}>
+                <span
+                  class={className}
+                  style={{ "font-weight": "bold", "font-size": "smaller" }}
+                >
+                  author:
+                </span>
+                <input
+                  type="text"
+                  value={authorAsNpub()}
+                  onInput={(e) => handleAuthorInput(e.currentTarget.value)}
+                  placeholder="author npub (optional)"
+                  style={{
+                    margin: "0 6px",
+                    padding: "2px 4px",
+                    width: "400px",
+                    "font-family": "monospace",
+                    "font-size": "smaller",
+                  }}
+                />
+              </div>
               <hr />
 
               <Content
@@ -128,29 +220,49 @@ export default function DecodableContent({ content }: { content: string }) {
                 setRelayHints={setRelayHints}
                 relayHints={relayHints}
               />
-              <Show
-                when={
-                  (decoded()?.data as nip19.EventPointer).kind !== undefined
-                }
-              >
-                <Content
-                  content={
-                    (decoded()?.data as nip19.EventPointer)?.kind?.toString() ??
-                    ""
-                  }
-                  title={"kind"}
-                  link={false}
+
+              {/* 編集可能なkind */}
+              <div class={className} style={{ margin: "6px 0" }}>
+                <span
+                  class={className}
+                  style={{ "font-weight": "bold", "font-size": "smaller" }}
+                >
+                  kind:
+                </span>
+                <input
+                  type="number"
+                  value={eventKind() ?? ""}
+                  onInput={(e) => {
+                    const value = e.currentTarget.value;
+                    setEventKind(value === "" ? undefined : parseInt(value));
+                  }}
+                  placeholder="kind (optional)"
+                  style={{ margin: "0 6px", padding: "2px 4px", width: "80px" }}
                 />
-              </Show>
-              <Show when={(decoded()?.data as nip19.EventPointer).author}>
-                <Content
-                  content={
-                    (decoded()?.data as nip19.EventPointer)?.author ?? ""
-                  }
-                  title={"author"}
-                  link={false}
+              </div>
+
+              {/* 編集可能なauthor (npub表記) */}
+              <div class={className} style={{ margin: "6px 0" }}>
+                <span
+                  class={className}
+                  style={{ "font-weight": "bold", "font-size": "smaller" }}
+                >
+                  author:
+                </span>
+                <input
+                  type="text"
+                  value={authorAsNpub()}
+                  onInput={(e) => handleAuthorInput(e.currentTarget.value)}
+                  placeholder="author npub (optional)"
+                  style={{
+                    margin: "0 6px",
+                    padding: "2px 4px",
+                    width: "400px",
+                    "font-family": "monospace",
+                    "font-size": "smaller",
+                  }}
                 />
-              </Show>
+              </div>
               <hr />
               <Content
                 content={nip19.noteEncode(
@@ -231,6 +343,49 @@ export default function DecodableContent({ content }: { content: string }) {
                 setRelayHints={setRelayHints}
                 relayHints={relayHints}
               />
+
+              {/* 編集可能なkind */}
+              <div class={className} style={{ margin: "6px 0" }}>
+                <span
+                  class={className}
+                  style={{ "font-weight": "bold", "font-size": "smaller" }}
+                >
+                  kind:
+                </span>
+                <input
+                  type="number"
+                  value={eventKind() ?? ""}
+                  onInput={(e) => {
+                    const value = e.currentTarget.value;
+                    setEventKind(value === "" ? undefined : parseInt(value));
+                  }}
+                  placeholder="kind (optional)"
+                  style={{ margin: "0 6px", padding: "2px 4px", width: "80px" }}
+                />
+              </div>
+
+              {/* 編集可能なauthor (npub表記) */}
+              <div class={className} style={{ margin: "6px 0" }}>
+                <span
+                  class={className}
+                  style={{ "font-weight": "bold", "font-size": "smaller" }}
+                >
+                  author:
+                </span>
+                <input
+                  type="text"
+                  value={authorAsNpub()}
+                  onInput={(e) => handleAuthorInput(e.currentTarget.value)}
+                  placeholder="author npub (optional)"
+                  style={{
+                    margin: "0 6px",
+                    padding: "2px 4px",
+                    width: "400px",
+                    "font-family": "monospace",
+                    "font-size": "smaller",
+                  }}
+                />
+              </div>
               <hr />
               <Content content={nevent} title={"nevent"} />
             </>
