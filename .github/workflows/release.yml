@@ -1,0 +1,105 @@
+# .github/workflows/release.yml
+name: Extension Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # v1.0.0のようなタグでトリガー
+  workflow_dispatch:  # 手動実行トリガー
+    inputs:
+      version:
+        description: 'リリースバージョン (例: 1.0.0)'
+        required: true
+        type: string
+      publish_chrome:
+        description: 'Chrome Web Storeに公開'
+        required: true
+        type: boolean
+        default: true
+      publish_firefox:
+        description: 'Firefox Add-onsに公開'
+        required: true
+        type: boolean
+        default: true
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build extension
+      run: npm run build
+      
+    - name: Get version from tag or input
+      id: version
+      run: |
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+          echo "VERSION=${{ github.event.inputs.version }}" >> $GITHUB_OUTPUT
+        else
+          echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+        fi
+      
+    - name: Update manifest version
+      run: |
+        # manifest.jsonのバージョンを更新
+        sed -i 's/"version": ".*"/"version": "${{ steps.version.outputs.VERSION }}"/' dist/manifest.json
+        
+    - name: Create Chrome extension package
+      run: |
+        cd dist
+        zip -r ../extension-chrome-${{ steps.version.outputs.VERSION }}.zip . -x "*.DS_Store"
+        
+    - name: Create Firefox extension package
+      run: |
+        cd dist
+        zip -r ../extension-firefox-${{ steps.version.outputs.VERSION }}.zip . -x "*.DS_Store"
+        
+    - name: Submit to Chrome Web Store
+      if: github.event_name == 'push' || github.event.inputs.publish_chrome == 'true'
+      uses: Klemensas/chrome-extension-upload-action@v1.3
+      with:
+        refresh-token: ${{ secrets.CHROME_REFRESH_TOKEN }}
+        client-id: ${{ secrets.CHROME_CLIENT_ID }}
+        client-secret: ${{ secrets.CHROME_CLIENT_SECRET }}
+        file-path: extension-chrome-${{ steps.version.outputs.VERSION }}.zip
+        app-id: ${{ secrets.CHROME_APP_ID }}
+        publish: true
+        
+    - name: Submit to Firefox Add-ons
+      if: github.event_name == 'push' || github.event.inputs.publish_firefox == 'true'
+      uses: trmcnvn/firefox-addon@v1
+      with:
+        uuid: ${{ secrets.FIREFOX_EXTENSION_UUID }}
+        xpi: extension-firefox-${{ steps.version.outputs.VERSION }}.zip
+        manifest: dist/manifest.json
+        api-key: ${{ secrets.FIREFOX_API_KEY }}
+        api-secret: ${{ secrets.FIREFOX_API_SECRET }}
+        
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          extension-chrome-${{ steps.version.outputs.VERSION }}.zip
+          extension-firefox-${{ steps.version.outputs.VERSION }}.zip
+        body: |
+          ## Changes in v${{ steps.version.outputs.VERSION }}
+          
+          自動リリース by GitHub Actions
+          
+          ### Files
+          - `extension-chrome-${{ steps.version.outputs.VERSION }}.zip` - Chrome Web Store用
+          - `extension-firefox-${{ steps.version.outputs.VERSION }}.zip` - Firefox Add-ons用
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
