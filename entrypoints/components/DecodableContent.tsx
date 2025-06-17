@@ -18,7 +18,7 @@ import RelayHints from "./RelayHints";
 import EncodedNsec from "./EncodedNsec";
 
 export default function DecodableContent({ content }: { content: string }) {
-  const decoded: Accessor<nip19.DecodeResult | null> = createMemo(() => {
+  const decoded: Accessor<nip19.DecodedResult | null> = createMemo(() => {
     try {
       // console.log(nip19.decode(content).type);
       return nip19.decode(content);
