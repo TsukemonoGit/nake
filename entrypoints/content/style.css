@@ -25,7 +25,7 @@
   border: 1px solid #ccc;
   width: max-content;
   height: max-content;
-  z-index: 9999;
+  z-index: calc(infinity);
   border-radius: 100%;
   box-shadow: 2px 2px 10px 0px rgba(0, 0, 0, 0.35);
 }
