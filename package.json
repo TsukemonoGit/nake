@@ -16,12 +16,12 @@
   },
   "dependencies": {
     "@konemono/nostr-share-component": "^0.4.2",
-    "nostr-tools": "^2.15.0",
-    "solid-js": "^1.9.7"
+    "nostr-tools": "^2.16.2",
+    "solid-js": "^1.9.9"
   },
   "devDependencies": {
-    "typescript": "^5.8.3",
-    "vite-plugin-solid": "^2.11.6",
-    "wxt": "^0.20.7"
+    "typescript": "^5.9.2",
+    "vite-plugin-solid": "^2.11.8",
+    "wxt": "^0.20.11"
   }
 }
