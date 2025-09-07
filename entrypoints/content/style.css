@@ -134,9 +134,6 @@
 .nakeHint:active {
   transform: scale(0.98);
 }
-.nakeHint:focus,
-.nakeHint:focus-visible {
-}
 
 #nakeInput {
   padding: 0 2px !important;
