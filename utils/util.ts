@@ -16,10 +16,12 @@ export const nip49Regex = /^ncryptsec1[023456789acdefghjklmnpqrstuvwxyz]{58,}$/;
 export interface Settings {
   showIconOnTextSelect: boolean;
   // showLocalTimeNumberSelect: boolean;
+  njumpBaseUrl: string; // njumpリンク先のベースURL
 }
 export const defaultSettings: Settings = {
   showIconOnTextSelect: true,
   //showLocalTimeNumberSelect: true,
+  njumpBaseUrl: "https://njump.me", // デフォルト
   // 他の設定項目をここに追加
   //   darkMode: false, // 新しい設定項目
 };

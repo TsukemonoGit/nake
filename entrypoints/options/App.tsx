@@ -30,36 +30,27 @@ export default function App() {
     saveSettings(newSettings);
   };
 
-  const handleLocalTimeCheckboxChange = (event: Event) => {
-    const target = event.target as HTMLInputElement;
-    //  console.log(target.checked);
-    const newSettings = {
-      ...settings(),
-      showLocalTimeNumberSelect: target.checked,
-    };
-    setSettings(newSettings);
-    saveSettings(newSettings);
-  };
-  // const handleDarkModeChange = (event: Event) => {
-  //   const target = event.target as HTMLInputElement;
-  //   const newSettings = {
-  //     ...settings(),
-  //     darkMode: target.checked,
-  //   };
-  //   setSettings(newSettings);
-  //   saveSettings(newSettings);
-  // };
   onCleanup(() => {
     // コンポーネントが破棄される前に実行するクリーンアップ処理
     saveSettings(settings());
   });
+
+  // njumpリンク先変更用ハンドラ
+  const handleNjumpBaseUrlChange = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    const newSettings = {
+      ...settings(),
+      njumpBaseUrl: target.value,
+    };
+    setSettings(newSettings);
+    saveSettings(newSettings);
+  };
 
   return (
     <div
       style={{
         padding: "12px",
         display: "flex",
-
         "flex-direction": "column",
         gap: "8px",
       }}
@@ -74,15 +65,21 @@ export default function App() {
         <span class="checkmark"></span>
       </label>
 
-      {/* <label class="custom-checkbox-container">
-        ダークモード
+      <label
+        style={{ display: "flex", "flex-direction": "column", gap: "4px" }}
+      >
+        {browser.i18n.getMessage("settings_externalViewerUrl_label")}
         <input
-          type="checkbox"
-          checked={settings().darkMode}
-          onChange={handleDarkModeChange}
+          type="text"
+          value={settings().njumpBaseUrl}
+          onInput={handleNjumpBaseUrlChange}
+          style={{ width: "100%", "max-width": "320px" }}
         />
-        <span class="checkmark"></span>
-      </label> */}
+        <span style={{ color: "#888", "font-size": "smaller" }}>
+          {browser.i18n.getMessage("settings_externalViewerUrl_placeholder")}
+        </span>
+      </label>
+
       {/**他の設定項目 */}
     </div>
   );

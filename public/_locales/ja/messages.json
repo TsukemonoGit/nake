@@ -4,5 +4,11 @@
   },
   "contextMenu_name": {
     "message": "テキスト選択時にアイコンを表示する"
+  },
+  "settings_externalViewerUrl_label": {
+    "message": "外部ビューアURL"
+  },
+  "settings_externalViewerUrl_placeholder": {
+    "message": "例: https://njump.me"
   }
 }
