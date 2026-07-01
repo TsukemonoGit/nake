@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "typescript": "^5.9.2",
-    "vite-plugin-solid": "^2.11.8",
-    "wxt": "^0.20.11"
+    "vite-plugin-solid": "^2.11.12",
+    "wxt": "^0.20.27"
   }
 }
